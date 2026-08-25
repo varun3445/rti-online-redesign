@@ -133,6 +133,9 @@ export async function createCase(input: {
   subject: string;
   authority: { code: string; name: string; ministry: string };
   applicantEmail: string;
+  applicantName?: string;
+  applicantAddress?: string;
+  draftText?: string;
 }): Promise<void> {
   const supabase = getSupabase();
   if (!supabase) return;
@@ -147,6 +150,9 @@ export async function createCase(input: {
     authority_ministry: input.authority.ministry,
     state: "submitted",
     applicant_email: input.applicantEmail,
+    applicant_name: input.applicantName ?? null,
+    applicant_address: input.applicantAddress ?? null,
+    draft_text: input.draftText ?? null,
     is_seed_example: false,
     submitted_at: now,
     updated_at: now,

@@ -345,6 +345,7 @@ button:disabled {
   margin-top: var(--gap-3);
   font-size: 13px;
   color: var(--ink-faint);
+  white-space: nowrap;
 }
 
 /* ---------- Info sections (below the fold) ---------- */

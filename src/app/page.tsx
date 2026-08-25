@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Nav } from "@/components/Nav";
 import { Footer } from "@/components/Footer";
@@ -12,6 +12,27 @@ const STEP_ICONS = [ChatIcon, BuildingIcon, CoinsIcon, MapPinCheckIcon];
 
 type ChatMessage = { role: "user" | "assistant"; content: string };
 type Authority = { code: string; name: string; ministry: string };
+type Applicant = { name: string; address: string; email: string };
+
+// Reflects the real two-pass pipeline: a grounded web-search pass, then a
+// drafting pass — so the wait is real, not padding for effect.
+const LOADING_STAGES = [
+  "Searching official sources…",
+  "Checking processing timelines…",
+  "Drafting your request…",
+];
+
+function ThreadTyping() {
+  const [stageIndex, setStageIndex] = useState(0);
+  useEffect(() => {
+    setStageIndex(0);
+    const id = setInterval(() => {
+      setStageIndex((i) => Math.min(i + 1, LOADING_STAGES.length - 1));
+    }, 1400);
+    return () => clearInterval(id);
+  }, []);
+  return <div className="thread__typing">{LOADING_STAGES[stageIndex]}</div>;
+}
 
 export default function Home() {
   const [step, setStep] = useState<"home" | "chat" | "verify" | "pay" | "done">("home");
@@ -19,6 +40,7 @@ export default function Home() {
   const [composerText, setComposerText] = useState("");
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [authority, setAuthority] = useState<Authority>();
+  const [applicant, setApplicant] = useState<Applicant>();
   const [draft, setDraft] = useState("");
   const [source, setSource] = useState<"ai" | "fallback">();
   const [loading, setLoading] = useState(false);
@@ -46,6 +68,12 @@ export default function Home() {
       setMessages((m) => [...m, { role: "assistant", content: j.reply }]);
       if (j.authority) setAuthority(j.authority);
       if (j.draft) setDraft(j.draft);
+      if (j.applicant) {
+        setApplicant(j.applicant);
+        // Carries the email the citizen already gave the assistant into
+        // step 2, so identity verification doesn't ask for it twice.
+        setEmail(j.applicant.email);
+      }
       setSource(j.source);
     } catch (x) {
       setError(x instanceof Error ? x.message : "Try again");
@@ -83,6 +111,9 @@ export default function Home() {
           subject: firstMessage || draft.slice(0, 80) || "RTI request",
           authority: authority ?? { code: "DOPT", name: "Department of Personnel & Training", ministry: "Ministry of Personnel, Public Grievances and Pensions" },
           applicantEmail: email,
+          applicantName: applicant?.name,
+          applicantAddress: applicant?.address,
+          draftText: draft,
         }),
       });
       setCaseId(id);
@@ -118,7 +149,7 @@ export default function Home() {
               </button>
             </form>
             <small className="landing__hint">
-              Plain language in. A formatted RTI request out.
+              Plain language in, a formatted RTI request out — powered by OpenAI.
             </small>
           </section>
 
@@ -189,7 +220,7 @@ export default function Home() {
                 </div>
               </div>
             ))}
-            {loading && <div className="thread__typing">Thinking&hellip;</div>}
+            {loading && <ThreadTyping />}
           </div>
 
           {authority && (

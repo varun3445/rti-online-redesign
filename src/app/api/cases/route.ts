@@ -9,12 +9,12 @@ export async function GET(request: Request) {
 
 export async function POST(request: Request) {
   const body = await request.json();
-  const { id, subject, authority, applicantEmail } = body;
+  const { id, subject, authority, applicantEmail, applicantName, applicantAddress, draftText } = body;
 
   if (!id || !subject || !authority?.code || !applicantEmail) {
     return NextResponse.json({ error: "Missing required fields." }, { status: 400 });
   }
 
-  await createCase({ id, subject, authority, applicantEmail });
+  await createCase({ id, subject, authority, applicantEmail, applicantName, applicantAddress, draftText });
   return NextResponse.json({ ok: true });
 }
