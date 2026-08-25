@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Nav } from "@/components/Nav";
+import { Footer } from "@/components/Footer";
 import { whatIsRti, whatYouCanGet, howItWorksSteps } from "@/lib/rti-content";
 import { ClockIcon, DocumentIcon, ChatIcon, CoinsIcon, BuildingIcon, MapPinCheckIcon } from "@/components/icons";
 
@@ -64,10 +65,7 @@ export default function HowItWorksPage() {
         </Link>
       </section>
 
-      <footer>
-        Prototype only. No real government service, identity verification, or
-        payment is used.
-      </footer>
+      <Footer />
     </main>
   );
 }

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { FontSizeControl } from "@/components/FontSizeControl";
 
 export function Nav() {
   return (
@@ -12,6 +13,7 @@ export function Nav() {
           <Link href="/your-rights">Your rights</Link>
           <Link href="/my-rti">My RTI</Link>
         </span>
+        <FontSizeControl />
         <Link href="/" className="site-nav__cta">
           Start a request &rarr;
         </Link>

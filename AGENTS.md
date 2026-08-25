@@ -65,6 +65,20 @@ track and appeal separately, with no unified view.
 7. One-click "File Appeal" from a stalled/rejected case, prefilled from
    the original case
 
+## Also built (as-is parity pages, from the card-sort audit)
+Added after comparing against rtionline.gov.in's real feature set — these
+close real gaps, not scope creep:
+- `/view-status` — single-case lookup by mock registration number, shows
+  status + subrecords + the event timeline (uses `RtiCase.events`, which
+  the schema always had but no page displayed until this)
+- `/view-history` — mock email lookup gate → same underlying view as My
+  RTI (deliberately the same data — the real site's split between these
+  two concepts is itself one of the IA problems this redesign fixes)
+- `/faq`, `/contact`, `/policy`, `/manual` — static support pages, linked
+  from a shared `Footer` component, not the primary nav
+- Text-size control (A− / A / A+) in the nav — real, functional, persists
+  via localStorage, scales body copy (rem-based) not headings/chrome
+
 ## Explicitly out of scope — do not build these
 - Real payment gateway integration
 - Real government backend / real CPIO or Nodal Officer routing
@@ -118,7 +132,10 @@ more if a specific detail is needed):
   these rather than inventing fictional ones): Ministry of Railways,
   Employees' Provident Fund Organisation (EPFO), Central Board of Direct
   Taxes (Income Tax), Department of Personnel & Training (DoPT), Ministry
-  of Home Affairs, Ministry of External Affairs (passports).
+  of Home Affairs, Ministry of External Affairs (passports), Ministry of
+  Education (CBSE / school & degree records — added after a live gap: the
+  matcher had zero education-domain coverage, so "marksheet"/"education"
+  queries silently always fell through to the clarifying question).
 - What the REAL site currently does badly (the "before" we're fixing —
   useful for before/after copy in the demo, don't replicate these):
   3000-character request-text limit with a narrow allowed-character

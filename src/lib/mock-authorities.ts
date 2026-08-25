@@ -1,9 +1,58 @@
-export type MockAuthority={code:string;ministry:string;name:string;topics:string[]};
-const rows:[string,string,string,string[]][]=[
-["RAIL","Ministry of Railways","Railway Board",["railway","train","station"]],["RAIL","Ministry of Railways","Northern Railway",["northern railway"]],["RAIL","Ministry of Railways","Western Railway",["western railway"]],["RAIL","Ministry of Railways","Central Railway",["central railway"]],["RAIL","Ministry of Railways","IRCTC",["ticket","catering"]],["RAIL","Ministry of Railways","Rail Land Development Authority",["rail land"]],
-["EPFO","Ministry of Labour and Employment","Employees' Provident Fund Organisation",["pf","epf","uan","pension"]],["EPFO","Ministry of Labour and Employment","EPFO Delhi Regional Office",["pf delhi"]],["EPFO","Ministry of Labour and Employment","EPFO Noida Regional Office",["pf noida"]],["EPFO","Ministry of Labour and Employment","EPFO Bengaluru Regional Office",["pf bengaluru"]],["EPFO","Ministry of Labour and Employment","EPFO Chandigarh Regional Office",["pf chandigarh"]],
-["CBDT","Ministry of Finance","Central Board of Direct Taxes",["income tax","cbdt"]],["ITD","Ministry of Finance","Income Tax Department",["income tax return","refund"]],["ITD","Ministry of Finance","Income Tax Delhi",["income tax delhi"]],["ITD","Ministry of Finance","Income Tax Mumbai",["income tax mumbai"]],["CBDT","Ministry of Finance","Directorate of Income Tax (Systems)",["e-filing"]],
-["DOPT","Ministry of Personnel, Public Grievances and Pensions","Department of Personnel & Training",["civil service","personnel"]],["DOPT","Ministry of Personnel, Public Grievances and Pensions","Central Secretariat Service Division",["service records"]],["DPPW","Ministry of Personnel, Public Grievances and Pensions","Department of Pension & Pensioners' Welfare",["central pension"]],["DOPT","Ministry of Personnel, Public Grievances and Pensions","Establishment Division",["service rules"]],
-["MHA","Ministry of Home Affairs","Ministry of Home Affairs",["citizenship","home affairs"]],["MHA","Ministry of Home Affairs","Bureau of Immigration",["immigration"]],["MHA","Ministry of Home Affairs","National Crime Records Bureau",["crime statistics"]],["MHA","Ministry of Home Affairs","Central Armed Police Forces Division",["capf"]],["MHA","Ministry of Home Affairs","Foreigners Division",["oci","foreign nationals"]],
-["MEA","Ministry of External Affairs","Ministry of External Affairs",["foreign affairs"]],["PSPT","Ministry of External Affairs","Passport Seva Project",["passport"]],["CPV","Ministry of External Affairs","Consular, Passport and Visa Division",["visa","passport"]],["MEA","Ministry of External Affairs","Protector General of Emigrants",["emigration"]],["PSPT","Ministry of External Affairs","Regional Passport Office, Delhi",["passport delhi"]],["PSPT","Ministry of External Affairs","Regional Passport Office, Mumbai",["passport mumbai"]]];
-export const mockAuthorities:MockAuthority[]=rows.map(([code,ministry,name,topics])=>({code,ministry,name,topics}));
+export type MockAuthority = { code: string; ministry: string; name: string; topics: string[] };
+
+const rows: [string, string, string, string[]][] = [
+  // Railways
+  ["RAIL", "Ministry of Railways", "Railway Board", ["railway", "train", "station"]],
+  ["RAIL", "Ministry of Railways", "Northern Railway", ["northern railway"]],
+  ["RAIL", "Ministry of Railways", "Western Railway", ["western railway"]],
+  ["RAIL", "Ministry of Railways", "Central Railway", ["central railway"]],
+  ["RAIL", "Ministry of Railways", "IRCTC", ["ticket", "catering"]],
+  ["RAIL", "Ministry of Railways", "Rail Land Development Authority", ["rail land"]],
+
+  // Labour / EPFO
+  ["EPFO", "Ministry of Labour and Employment", "Employees' Provident Fund Organisation", ["pf", "epf", "uan", "pension", "provident fund"]],
+  ["EPFO", "Ministry of Labour and Employment", "EPFO Delhi Regional Office", ["pf delhi"]],
+  ["EPFO", "Ministry of Labour and Employment", "EPFO Noida Regional Office", ["pf noida"]],
+  ["EPFO", "Ministry of Labour and Employment", "EPFO Bengaluru Regional Office", ["pf bengaluru"]],
+  ["EPFO", "Ministry of Labour and Employment", "EPFO Chandigarh Regional Office", ["pf chandigarh"]],
+
+  // Finance / Income Tax
+  ["CBDT", "Ministry of Finance", "Central Board of Direct Taxes", ["income tax", "cbdt"]],
+  ["ITD", "Ministry of Finance", "Income Tax Department", ["income tax return", "refund"]],
+  ["ITD", "Ministry of Finance", "Income Tax Delhi", ["income tax delhi"]],
+  ["ITD", "Ministry of Finance", "Income Tax Mumbai", ["income tax mumbai"]],
+  ["CBDT", "Ministry of Finance", "Directorate of Income Tax (Systems)", ["e-filing"]],
+
+  // Personnel / Pensions
+  ["DOPT", "Ministry of Personnel, Public Grievances and Pensions", "Department of Personnel & Training", ["civil service", "personnel"]],
+  ["DOPT", "Ministry of Personnel, Public Grievances and Pensions", "Central Secretariat Service Division", ["service records"]],
+  ["DPPW", "Ministry of Personnel, Public Grievances and Pensions", "Department of Pension & Pensioners' Welfare", ["central pension"]],
+  ["DOPT", "Ministry of Personnel, Public Grievances and Pensions", "Establishment Division", ["service rules"]],
+
+  // Home Affairs
+  ["MHA", "Ministry of Home Affairs", "Ministry of Home Affairs", ["citizenship", "home affairs"]],
+  ["MHA", "Ministry of Home Affairs", "Bureau of Immigration", ["immigration"]],
+  ["MHA", "Ministry of Home Affairs", "National Crime Records Bureau", ["crime statistics"]],
+  ["MHA", "Ministry of Home Affairs", "Central Armed Police Forces Division", ["capf"]],
+  ["MHA", "Ministry of Home Affairs", "Foreigners Division", ["oci", "foreign nationals"]],
+
+  // External Affairs / Passports
+  ["MEA", "Ministry of External Affairs", "Ministry of External Affairs", ["foreign affairs"]],
+  ["PSPT", "Ministry of External Affairs", "Passport Seva Project", ["passport"]],
+  ["CPV", "Ministry of External Affairs", "Consular, Passport and Visa Division", ["visa", "passport"]],
+  ["MEA", "Ministry of External Affairs", "Protector General of Emigrants", ["emigration"]],
+  ["PSPT", "Ministry of External Affairs", "Regional Passport Office, Delhi", ["passport delhi"]],
+  ["PSPT", "Ministry of External Affairs", "Regional Passport Office, Mumbai", ["passport mumbai"]],
+
+  // Education
+  ["CBSE", "Ministry of Education", "Central Board of Secondary Education (CBSE)", ["marksheet", "mark sheet", "board exam", "cbse", "10th", "12th", "migration certificate", "school certificate"]],
+  ["DSEL", "Ministry of Education", "Department of School Education and Literacy", ["school", "education", "student", "teacher"]],
+  ["UGC", "Ministry of Education", "University Grants Commission (UGC)", ["degree", "university", "ugc", "college", "transcript"]],
+];
+
+export const mockAuthorities: MockAuthority[] = rows.map(([code, ministry, name, topics]) => ({
+  code,
+  ministry,
+  name,
+  topics,
+}));

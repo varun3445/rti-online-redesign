@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { Nav } from "@/components/Nav";
+import { Footer } from "@/components/Footer";
 import { whatIsRti, whatYouCanGet, howItWorksSteps } from "@/lib/rti-content";
 import { ClockIcon, DocumentIcon, ChatIcon, CoinsIcon, BuildingIcon, MapPinCheckIcon } from "@/components/icons";
 
@@ -14,7 +15,7 @@ type Authority = { code: string; name: string; ministry: string };
 
 export default function Home() {
   const [step, setStep] = useState<"home" | "chat" | "verify" | "pay" | "done">("home");
-  const [firstMessage, setFirstMessage] = useState("");
+  const [firstMessage, setFirstMessage] = useState("Why has my PF withdrawal claim been pending for 4 months?");
   const [composerText, setComposerText] = useState("");
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [authority, setAuthority] = useState<Authority>();
@@ -22,6 +23,11 @@ export default function Home() {
   const [source, setSource] = useState<"ai" | "fallback">();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [email, setEmail] = useState("judge.demo@example.com");
+  const [otpSent, setOtpSent] = useState(false);
+  const [otpCode, setOtpCode] = useState("123456");
+  const [caseId, setCaseId] = useState("");
+  const [filing, setFiling] = useState(false);
 
   async function sendMessage(text: string) {
     if (!text.trim() || loading) return;
@@ -60,6 +66,30 @@ export default function Home() {
     const text = composerText;
     setComposerText("");
     await sendMessage(text);
+  }
+
+  async function finalizeCase() {
+    if (filing) return;
+    setFiling(true);
+    const serial = String(Math.floor(10000 + Math.random() * 90000));
+    const authorityCode = authority?.code || "DOPT";
+    const id = `${authorityCode}/R/E/26/${serial}`;
+    try {
+      await fetch("/api/cases", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          id,
+          subject: firstMessage || draft.slice(0, 80) || "RTI request",
+          authority: authority ?? { code: "DOPT", name: "Department of Personnel & Training", ministry: "Ministry of Personnel, Public Grievances and Pensions" },
+          applicantEmail: email,
+        }),
+      });
+      setCaseId(id);
+    } finally {
+      setFiling(false);
+      setStep("done");
+    }
   }
 
   return (
@@ -202,7 +232,57 @@ export default function Home() {
           <h1 className="step-panel__title">
             One check. <em>Then you&rsquo;re through.</em>
           </h1>
-          <button onClick={() => setStep("pay")}>Verify mock code 123456 &rarr;</button>
+
+          {!otpSent ? (
+            <>
+              <p>
+                This is also the email your registration number and future
+                status updates will be tied to &mdash; including what you&rsquo;d
+                look up later in{" "}
+                <Link href="/view-history" className="text-link">
+                  View History
+                </Link>
+                .
+              </p>
+              <form
+                className="composer lookup-form"
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  if (!email.trim()) return;
+                  setOtpSent(true);
+                }}
+              >
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="you@example.com"
+                />
+                <button type="submit">Send mock code &rarr;</button>
+              </form>
+            </>
+          ) : (
+            <>
+              <p>
+                Mock code sent to <b>{email}</b>. Nothing was really sent
+                &mdash; use <b>123456</b>.
+              </p>
+              <form
+                className="composer lookup-form"
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  setStep("pay");
+                }}
+              >
+                <input
+                  value={otpCode}
+                  onChange={(e) => setOtpCode(e.target.value)}
+                  placeholder="123456"
+                />
+                <button type="submit">Verify &rarr;</button>
+              </form>
+            </>
+          )}
         </section>
       )}
 
@@ -215,8 +295,12 @@ export default function Home() {
             Non-BPL applicants pay &#8377;10. BPL applicants attaching a valid
             BPL certificate pay no fee.
           </p>
-          <button onClick={() => setStep("done")}>Pay &#8377;10 (mock) &rarr;</button>{" "}
-          <button onClick={() => setStep("done")}>Use BPL waiver &rarr;</button>
+          <button onClick={finalizeCase} disabled={filing}>
+            {filing ? "Filing…" : "Pay ₹10 (mock) →"}
+          </button>{" "}
+          <button onClick={finalizeCase} disabled={filing}>
+            {filing ? "Filing…" : "Use BPL waiver →"}
+          </button>
         </section>
       )}
 
@@ -229,20 +313,19 @@ export default function Home() {
           </h1>
           <div className="artifact">
             <span className="artifact__label">YOUR RTI CASE ID</span>
-            <h2>{authority?.code || "DOPT"}/R/E/26/08142</h2>
+            <h2>{caseId}</h2>
             <p>
               One citizen-facing case, even if a Nodal Officer forwards parts
-              to other CPIOs.
+              to other CPIOs. Status updates go to <b>{email}</b>.
             </p>
-            <Link href="/my-rti">View in My RTI &rarr;</Link>
+            <Link href={`/view-history?email=${encodeURIComponent(email)}`}>
+              View in My RTI &rarr;
+            </Link>
           </div>
         </section>
       )}
 
-      <footer>
-        Prototype only. No real government service, identity verification, or
-        payment is used.
-      </footer>
+      <Footer />
     </main>
   );
 }

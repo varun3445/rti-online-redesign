@@ -15,7 +15,7 @@ export const authoritySchema = z.object({
 });
 
 export const caseEventSchema = z.object({
-  occurredAt: z.iso.datetime(),
+  occurredAt: z.iso.datetime({ offset: true }),
   state: caseLifecycleStateSchema,
   message: z.string().min(1),
 });
@@ -25,8 +25,8 @@ export const forwardedSubRecordSchema = z.object({
   parentCaseId: z.string().min(1),
   authority: authoritySchema,
   state: caseLifecycleStateSchema,
-  createdAt: z.iso.datetime(),
-  updatedAt: z.iso.datetime(),
+  createdAt: z.iso.datetime({ offset: true }),
+  updatedAt: z.iso.datetime({ offset: true }),
   events: z.array(caseEventSchema).min(1),
 });
 
@@ -36,8 +36,8 @@ export const rtiCaseSchema = z
     subject: z.string().min(1),
     authority: authoritySchema,
     state: caseLifecycleStateSchema,
-    submittedAt: z.iso.datetime(),
-    updatedAt: z.iso.datetime(),
+    submittedAt: z.iso.datetime({ offset: true }),
+    updatedAt: z.iso.datetime({ offset: true }),
     events: z.array(caseEventSchema).min(1),
     subRecords: z.array(forwardedSubRecordSchema),
   })

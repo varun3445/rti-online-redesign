@@ -56,6 +56,18 @@
 
 html {
   color-scheme: light;
+  font-size: 16px;
+}
+
+/* Text-size control (nav A- / A / A+). Body copy uses rem so it responds;
+   headings/labels stay in px on purpose — this scales reading content,
+   not the whole chrome, matching how the real site's own A+/A/A- behaves. */
+html[data-font-scale="sm"] {
+  font-size: 15px;
+}
+
+html[data-font-scale="lg"] {
+  font-size: 19px;
 }
 
 body {
@@ -63,7 +75,7 @@ body {
   background: var(--paper);
   color: var(--ink);
   font-family: var(--font-inter), Inter, sans-serif;
-  font-size: 16px;
+  font-size: 1rem;
   line-height: 1.6;
 }
 
@@ -132,6 +144,7 @@ a {
   text-decoration: none;
   font-size: 14px;
   font-weight: 500;
+  white-space: nowrap;
 }
 
 .site-nav__links a:hover {
@@ -151,6 +164,36 @@ a {
 
 .site-nav__cta:hover {
   background: var(--brand-ink);
+}
+
+.font-size-control {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  border: 1px solid var(--line);
+  border-radius: var(--edge-pill);
+  padding: 3px;
+  margin-right: var(--gap-2);
+}
+
+.font-size-control button {
+  padding: 5px 9px;
+  border-radius: var(--edge-pill);
+  background: transparent;
+  color: var(--ink-soft);
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.font-size-control button:hover {
+  background: var(--paper-dim);
+  color: var(--ink);
+}
+
+.font-size-control button.is-active {
+  background: var(--ink);
+  color: var(--paper);
 }
 
 a:focus-visible,
@@ -199,7 +242,7 @@ textarea:focus-visible {
 }
 
 .landing__lede {
-  font-size: 18px;
+  font-size: 1.125rem;
   color: var(--ink-soft);
   max-width: 460px;
   margin: 0 auto var(--gap-6);
@@ -331,7 +374,7 @@ button:disabled {
 }
 
 .section__body {
-  font-size: 17px;
+  font-size: 1.0625rem;
   max-width: var(--read);
   margin-bottom: var(--gap-4);
 }
@@ -492,7 +535,7 @@ button:disabled {
 }
 
 .page-header__lede {
-  font-size: 18px;
+  font-size: 1.125rem;
   max-width: var(--read);
 }
 
@@ -543,7 +586,7 @@ button:disabled {
   max-width: 80%;
   padding: var(--gap-3) var(--gap-4);
   border-radius: var(--edge-lg);
-  font-size: 15px;
+  font-size: 0.9375rem;
   line-height: 1.55;
 }
 
@@ -765,13 +808,166 @@ button:disabled {
   gap: var(--gap-2);
 }
 
-footer {
+/* ---------- View Status lookup ---------- */
+.lookup-form {
+  max-width: 480px;
+}
+
+.lookup-samples {
+  margin: var(--gap-3) 0 var(--gap-6);
+  font-size: 0.8125rem;
+  color: var(--ink-faint);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--gap-2);
+}
+
+.lookup-samples__chip {
+  background: var(--paper-dim);
+  border: 1px solid var(--line);
+  color: var(--ink-soft);
+  padding: 3px 10px;
+  border-radius: var(--edge-pill);
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.lookup-samples__chip:hover {
+  background: var(--brand-tint);
+  color: var(--brand-ink);
+  border-color: var(--brand-tint);
+}
+
+.view-status-result {
+  max-width: var(--read);
+}
+
+.view-status-result h2 {
+  font-size: 20px;
+  margin: 0 0 var(--gap-1);
+}
+
+.timeline {
+  margin-top: var(--gap-4);
+  padding-top: var(--gap-4);
+  border-top: 1px solid rgba(20, 22, 26, 0.08);
+}
+
+.timeline__list {
+  list-style: none;
+  margin: var(--gap-3) 0 0;
+  padding: 0;
+  display: grid;
+  gap: var(--gap-4);
+}
+
+.timeline__item {
+  display: flex;
+  gap: var(--gap-3);
+}
+
+.timeline__item .status-dot {
+  margin-top: 6px;
+}
+
+.timeline__message {
+  margin: 0;
+  font-size: 0.875rem;
+  color: var(--ink);
+}
+
+.timeline__date {
+  margin: 2px 0 0;
+  font-size: 12px;
+  color: var(--ink-faint);
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+}
+
+.site-footer {
   border-top: 1px solid var(--line);
   padding: var(--gap-6) var(--gutter);
   margin-top: var(--gap-9);
   text-align: center;
+}
+
+.site-footer__links {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: var(--gap-2) var(--gap-6);
+  margin-bottom: var(--gap-4);
+}
+
+.site-footer__links a {
   color: var(--ink-soft);
-  font-size: 14px;
+  text-decoration: none;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.site-footer__links a:hover {
+  color: var(--brand);
+}
+
+.site-footer__disclosure {
+  color: var(--ink-faint);
+  font-size: 0.8125rem;
+  margin: 0;
+}
+
+/* ---------- FAQ ---------- */
+.faq-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  max-width: var(--read);
+  display: grid;
+  gap: var(--gap-3);
+}
+
+.faq-item {
+  background: var(--paper-dim);
+  border-radius: var(--edge-lg);
+}
+
+.faq-item details {
+  padding: var(--gap-4) var(--gap-6);
+}
+
+.faq-item summary {
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.9375rem;
+  color: var(--ink);
+  list-style: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--gap-4);
+}
+
+.faq-item summary::-webkit-details-marker {
+  display: none;
+}
+
+.faq-item summary::after {
+  content: "+";
+  flex-shrink: 0;
+  font-size: 20px;
+  color: var(--ink-faint);
+  line-height: 1;
+}
+
+.faq-item details[open] summary::after {
+  content: "\2212";
+}
+
+.faq-item p {
+  margin: var(--gap-3) 0 0;
+  font-size: 0.9375rem;
 }
 
 @media (max-width: 780px) {

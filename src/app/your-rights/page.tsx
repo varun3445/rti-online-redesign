@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Nav } from "@/components/Nav";
+import { Footer } from "@/components/Footer";
 import { yourRights } from "@/lib/rti-content";
 
 export default function YourRightsPage() {
@@ -37,10 +38,7 @@ export default function YourRightsPage() {
         </Link>
       </section>
 
-      <footer>
-        Prototype only. No real government service, identity verification, or
-        payment is used.
-      </footer>
+      <Footer />
     </main>
   );
 }
