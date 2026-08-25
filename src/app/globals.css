@@ -1,0 +1,823 @@
+/* Fresh build — referencing Origin (useorigin.com), Sana (sana.ai), and
+   Craft (craft.do) for mechanics only, reworked for a flat, solid-color,
+   white-background civic product. No glass, no blur, no gradient blobs. */
+
+:root {
+  --ink: #221912;
+  --ink-soft: #5c5045;
+  --ink-faint: #9c9184;
+  --paper: #ffffff;
+  --paper-dim: #f6f2ec;
+  --line: #e9e1d5;
+
+  /* Terracotta/rust — grounded in Indian sandstone civic architecture,
+     not the generic blue-SaaS default. Decoupled from "progress" status
+     below, so brand and status meaning don't have to share one hue. */
+  --brand: #b8451f;
+  --brand-ink: #8f350f;
+  --brand-tint: #fbeae2;
+
+  --tone-info-ink: #5c5850;
+  --tone-info-tint: #f0ede4;
+  --tone-progress-ink: #8a6d1f;
+  --tone-progress-tint: #f5efd9;
+  --tone-moved-ink: #0e6f66;
+  --tone-moved-tint: #e1f3ef;
+  --tone-good-ink: #1c7a4d;
+  --tone-good-tint: #e3f4e9;
+  --tone-attention-ink: #a15a06;
+  --tone-attention-tint: #faedd6;
+  --tone-urgent-ink: #a3271f;
+  --tone-urgent-tint: #f8e3e1;
+
+  --gap-1: 4px;
+  --gap-2: 8px;
+  --gap-3: 12px;
+  --gap-4: 16px;
+  --gap-5: 20px;
+  --gap-6: 28px;
+  --gap-7: 40px;
+  --gap-8: 56px;
+  --gap-9: 88px;
+
+  --edge-sm: 8px;
+  --edge-md: 12px;
+  --edge-lg: 16px;
+  --edge-pill: 999px;
+
+  --measure: 1440px;
+  --read: 640px;
+  --gutter: 64px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  color-scheme: light;
+}
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-inter), Inter, sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+p {
+  color: var(--ink-soft);
+  margin: 0 0 var(--gap-5);
+}
+
+a {
+  color: var(--brand);
+}
+
+/* ---------- Nav — plain wordmark, inline links, single CTA ----------
+   The shell owns positioning and uses the EXACT same box model as
+   .section/.landing (max-width: measure, padding: gutter) so the pill's
+   outer edge always lines up with the content below it, at every
+   viewport width. The pill itself is purely visual — no width/margin
+   math of its own. */
+.site-nav-shell {
+  max-width: var(--measure);
+  margin: 0 auto;
+  padding: var(--gap-5) var(--gutter) 0;
+  position: sticky;
+  top: var(--gap-4);
+  z-index: 30;
+}
+
+.site-nav {
+  padding: var(--gap-3) var(--gap-3) var(--gap-3) var(--gap-5);
+  display: flex;
+  align-items: center;
+  gap: var(--gap-7);
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: var(--edge-pill);
+  box-shadow: 0 2px 10px rgba(20, 22, 26, 0.05);
+}
+
+.site-nav__brand {
+  display: flex;
+  align-items: baseline;
+  gap: var(--gap-2);
+  text-decoration: none;
+  color: var(--ink);
+  font-weight: 700;
+  font-size: 16px;
+  white-space: nowrap;
+}
+
+.site-nav__brand span {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+
+.site-nav__links {
+  display: flex;
+  gap: var(--gap-6);
+  flex: 1;
+}
+
+.site-nav__links a {
+  color: var(--ink-soft);
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.site-nav__links a:hover {
+  color: var(--ink);
+}
+
+.site-nav__cta {
+  padding: 10px 20px;
+  border-radius: var(--edge-pill);
+  background: var(--ink);
+  color: var(--paper);
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.site-nav__cta:hover {
+  background: var(--brand-ink);
+}
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid var(--brand);
+  outline-offset: 2px;
+}
+
+/* ---------- Landing hero ----------
+   The outer section matches every other section's width (measure/gutter)
+   so it doesn't create a width jump — the actual headline/input stay
+   visually contained via their own inner max-widths below, same pattern
+   as a full-bleed hero with a constrained content column inside it. */
+.landing {
+  max-width: var(--measure);
+  margin: clamp(var(--gap-8), 12vh, 140px) auto 0;
+  padding: 0 var(--gutter);
+  text-align: center;
+}
+
+.landing__eyebrow {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin-bottom: var(--gap-4);
+}
+
+.landing__title {
+  font-family: var(--font-source-serif), "Source Serif 4", serif;
+  font-weight: 400;
+  font-size: 66px;
+  line-height: 1.08;
+  letter-spacing: -0.01em;
+  margin: 0 0 var(--gap-5);
+  color: var(--ink);
+}
+
+.landing__title em {
+  color: var(--brand);
+  font-style: italic;
+}
+
+.landing__lede {
+  font-size: 18px;
+  color: var(--ink-soft);
+  max-width: 460px;
+  margin: 0 auto var(--gap-6);
+}
+
+/* ---------- Composer (chat input) ---------- */
+.composer {
+  display: flex;
+  gap: var(--gap-2);
+  text-align: left;
+}
+
+.composer input,
+.composer textarea {
+  flex: 1;
+}
+
+/* The landing page's primary composer — a big, fully-rounded pill with a
+   round icon-only submit button, matching Origin's input mechanic. */
+.composer--pill {
+  align-items: center;
+  max-width: 640px;
+  margin: 0 auto;
+  background: var(--paper-dim);
+  border: 1px solid var(--line);
+  border-radius: var(--edge-pill);
+  padding: var(--gap-2);
+  gap: var(--gap-2);
+}
+
+.composer--pill input {
+  border: none;
+  background: transparent;
+  padding: 12px var(--gap-4);
+}
+
+.composer--pill input:focus {
+  box-shadow: none;
+}
+
+.composer__submit {
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  line-height: 1;
+}
+
+input,
+textarea {
+  width: 100%;
+  padding: 15px 18px;
+  border: 1px solid var(--line);
+  border-radius: var(--edge-md);
+  font: inherit;
+  color: var(--ink);
+  background: var(--paper);
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: var(--ink-faint);
+}
+
+input:focus,
+textarea:focus {
+  border-color: var(--brand);
+  box-shadow: 0 0 0 3px var(--brand-tint);
+  outline: none;
+}
+
+button {
+  padding: 12px 22px;
+  border: 0;
+  border-radius: var(--edge-pill);
+  background: var(--brand);
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 15px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+button:hover {
+  background: var(--brand-ink);
+}
+
+button:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.landing__hint {
+  display: block;
+  margin-top: var(--gap-3);
+  font-size: 13px;
+  color: var(--ink-faint);
+}
+
+/* ---------- Info sections (below the fold) ---------- */
+.section {
+  max-width: var(--measure);
+  margin: var(--gap-9) auto;
+  padding: 0 var(--gutter);
+}
+
+.section__eyebrow {
+  display: block;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin-bottom: var(--gap-4);
+}
+
+.section__title {
+  font-weight: 700;
+  font-size: 32px;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  margin: 0 0 var(--gap-4);
+  max-width: var(--read);
+}
+
+.section__body {
+  font-size: 17px;
+  max-width: var(--read);
+  margin-bottom: var(--gap-4);
+}
+
+.section--intro {
+  max-width: var(--measure);
+}
+
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--gap-4);
+  margin-top: var(--gap-6);
+}
+
+.info-card {
+  border-radius: var(--edge-lg);
+  padding: var(--gap-6);
+}
+
+.info-card:nth-child(4n + 1) { background: var(--tone-progress-tint); }
+.info-card:nth-child(4n + 2) { background: var(--tone-moved-tint); }
+.info-card:nth-child(4n + 3) { background: var(--tone-attention-tint); }
+.info-card:nth-child(4n + 4) { background: var(--paper-dim); }
+
+.info-card__icon {
+  margin-bottom: var(--gap-3);
+  color: var(--ink);
+}
+
+.info-card h3 {
+  font-size: 17px;
+  margin: 0 0 var(--gap-2);
+}
+
+.info-card__quote {
+  font-style: italic;
+  color: var(--ink);
+  margin-bottom: var(--gap-2);
+}
+
+.info-card__note {
+  font-size: 14px;
+  color: var(--ink-soft);
+  margin: 0;
+}
+
+.numbered-list {
+  list-style: none;
+  margin: var(--gap-6) 0 0;
+  padding: 0;
+  max-width: var(--read);
+}
+
+.numbered-list__item {
+  display: flex;
+  gap: var(--gap-6);
+  padding: var(--gap-6) 0;
+  border-top: 1px solid var(--line);
+}
+
+.numbered-list__item:first-child {
+  border-top: none;
+}
+
+.numbered-list__index {
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--edge-pill);
+  background: var(--brand-tint);
+  color: var(--brand);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 15px;
+}
+
+.numbered-list__item h3 {
+  font-size: 17px;
+  margin: 0 0 var(--gap-2);
+}
+
+.numbered-list__item p {
+  margin: 0;
+}
+
+.right-cards {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  max-width: var(--read);
+  display: grid;
+  gap: var(--gap-4);
+}
+
+.right-cards__item {
+  background: var(--paper-dim);
+  border-radius: var(--edge-lg);
+  padding: var(--gap-6);
+}
+
+.right-cards__item h3 {
+  font-size: 17px;
+  margin: 0 0 var(--gap-2);
+}
+
+.right-cards__item p {
+  margin: 0;
+}
+
+.section--cta {
+  text-align: center;
+  border-top: 1px solid var(--line);
+  padding-top: var(--gap-9);
+}
+
+.section--cta h2 {
+  font-weight: 700;
+  font-size: 26px;
+  margin: 0 0 var(--gap-2);
+}
+
+.button-link {
+  display: inline-block;
+  margin-top: var(--gap-4);
+  padding: 12px 24px;
+  border-radius: var(--edge-pill);
+  background: var(--ink);
+  color: #ffffff;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.button-link:hover {
+  background: var(--brand-ink);
+}
+
+/* ---------- Wide page header (how-it-works, your-rights, my-rti) ---------- */
+.page-header {
+  max-width: var(--measure);
+  margin: var(--gap-8) auto 0;
+  padding: 0 var(--gutter);
+}
+
+.page-header__title {
+  font-weight: 700;
+  font-size: 42px;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  margin: var(--gap-4) 0 var(--gap-4);
+}
+
+.page-header__title em {
+  color: var(--brand);
+  font-style: normal;
+}
+
+.page-header__lede {
+  font-size: 18px;
+  max-width: var(--read);
+}
+
+/* ---------- Chat thread (the actual multi-turn intake) ---------- */
+.thread-page {
+  max-width: var(--measure);
+  margin: var(--gap-6) auto 0;
+  padding: 0 var(--gutter);
+}
+
+.thread-page__eyebrow {
+  display: block;
+  max-width: var(--read);
+  margin: 0 auto var(--gap-4);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+
+.thread-page__error {
+  max-width: var(--read);
+  margin: 0 auto var(--gap-4);
+}
+
+.thread {
+  max-width: var(--read);
+  margin: 0 auto var(--gap-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-4);
+}
+
+.thread__row {
+  display: flex;
+}
+
+.thread__row--user {
+  justify-content: flex-end;
+}
+
+.thread__row--assistant {
+  justify-content: flex-start;
+}
+
+.thread__bubble {
+  max-width: 80%;
+  padding: var(--gap-3) var(--gap-4);
+  border-radius: var(--edge-lg);
+  font-size: 15px;
+  line-height: 1.55;
+}
+
+.thread__bubble--user {
+  background: var(--ink);
+  color: #ffffff;
+  border-bottom-right-radius: var(--edge-sm);
+}
+
+.thread__bubble--assistant {
+  background: var(--paper-dim);
+  color: var(--ink);
+  border-bottom-left-radius: var(--edge-sm);
+}
+
+.thread__source {
+  display: inline-block;
+  margin-top: var(--gap-2);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: var(--gap-1) var(--gap-3);
+  border-radius: var(--edge-pill);
+}
+
+.thread__source--ai { color: var(--tone-good-ink); background: var(--tone-good-tint); }
+.thread__source--fallback { color: var(--tone-attention-ink); background: var(--tone-attention-tint); }
+
+.thread__typing {
+  font-size: 13px;
+  color: var(--ink-faint);
+  padding-left: var(--gap-2);
+}
+
+/* Artifact cards inside the thread — the matched authority + editable
+   draft. Visually distinct from chat bubbles (bordered, not a bubble
+   shape) so they read as "a real thing being produced," not more chat. */
+.artifact {
+  max-width: var(--read);
+  margin: 0 auto var(--gap-4);
+  border: 1px solid var(--line);
+  border-radius: var(--edge-lg);
+  padding: var(--gap-6);
+  background: var(--paper);
+}
+
+.artifact__label {
+  display: block;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin-bottom: var(--gap-3);
+}
+
+.artifact--authority {
+  background: var(--tone-progress-tint);
+  border: none;
+}
+
+.artifact h2 {
+  font-size: 20px;
+  margin: 0 0 var(--gap-1);
+}
+
+.artifact textarea {
+  min-height: 220px;
+  resize: vertical;
+  margin-bottom: var(--gap-2);
+}
+
+.artifact__meta {
+  font-size: 13px;
+  color: var(--ink-faint);
+  margin-bottom: var(--gap-4);
+}
+
+.thread-composer {
+  max-width: var(--read);
+  margin: 0 auto;
+  display: flex;
+  gap: var(--gap-2);
+  position: sticky;
+  bottom: var(--gap-4);
+}
+
+/* ---------- Step panels (verify / pay / confirm) ---------- */
+.step-panel {
+  max-width: var(--read);
+  margin: var(--gap-8) auto 0;
+  padding: 0 var(--gutter);
+}
+
+.step-panel__eyebrow {
+  display: block;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin-bottom: var(--gap-3);
+}
+
+.step-panel__tag {
+  display: inline-block;
+  background: var(--tone-attention-tint);
+  color: var(--tone-attention-ink);
+  padding: var(--gap-2) var(--gap-4);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  border-radius: var(--edge-pill);
+  margin-bottom: var(--gap-4);
+}
+
+.step-panel__title {
+  font-weight: 700;
+  font-size: 34px;
+  line-height: 1.2;
+  margin: 0 0 var(--gap-5);
+}
+
+.step-panel__title em {
+  color: var(--brand);
+  font-style: normal;
+}
+
+.step-panel .artifact {
+  margin-left: 0;
+}
+
+.error-text {
+  color: var(--tone-urgent-ink);
+}
+
+/* ---------- Status chips + case cards (My RTI) ---------- */
+.status-chip {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: var(--gap-1) var(--gap-3);
+  border-radius: var(--edge-pill);
+  margin-bottom: var(--gap-2);
+}
+
+.status-chip--submitted { color: var(--tone-info-ink); background: var(--tone-info-tint); }
+.status-chip--forwarded { color: var(--tone-progress-ink); background: var(--tone-progress-tint); }
+.status-chip--transferred { color: var(--tone-moved-ink); background: var(--tone-moved-tint); }
+.status-chip--responded { color: var(--tone-good-ink); background: var(--tone-good-tint); }
+.status-chip--additional-payment { color: var(--tone-attention-ink); background: var(--tone-attention-tint); }
+.status-chip--returned { color: var(--tone-urgent-ink); background: var(--tone-urgent-tint); }
+
+.status-dot {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  margin-right: var(--gap-2);
+}
+
+.status-dot--submitted { background: var(--tone-info-ink); }
+.status-dot--forwarded { background: var(--tone-progress-ink); }
+.status-dot--transferred { background: var(--tone-moved-ink); }
+.status-dot--responded { background: var(--tone-good-ink); }
+.status-dot--additional-payment { background: var(--tone-attention-ink); }
+.status-dot--returned { background: var(--tone-urgent-ink); }
+
+.case-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: var(--gap-4);
+  max-width: var(--measure);
+}
+
+.case-card {
+  border-radius: var(--edge-lg);
+  padding: var(--gap-6);
+  background: var(--paper-dim);
+}
+
+.case-card--submitted { background: var(--tone-info-tint); }
+.case-card--forwarded { background: var(--tone-progress-tint); }
+.case-card--transferred { background: var(--tone-moved-tint); }
+.case-card--responded { background: var(--tone-good-tint); }
+.case-card--additional-payment { background: var(--tone-attention-tint); }
+.case-card--returned { background: var(--tone-urgent-tint); }
+
+.case-card h3 {
+  font-size: 18px;
+  margin: 0 0 var(--gap-1);
+}
+
+.case-card__authority {
+  color: var(--ink-soft);
+  margin: 0;
+  font-size: 14px;
+}
+
+.case-card__summary {
+  margin: var(--gap-3) 0 0;
+  font-size: 14px;
+  color: var(--ink-soft);
+}
+
+.case-card__subrecords {
+  list-style: none;
+  margin: var(--gap-3) 0 0;
+  padding: var(--gap-3) 0 0;
+  border-top: 1px solid rgba(20, 22, 26, 0.08);
+  font-size: 13px;
+  color: var(--ink-soft);
+  display: grid;
+  gap: var(--gap-2);
+}
+
+footer {
+  border-top: 1px solid var(--line);
+  padding: var(--gap-6) var(--gutter);
+  margin-top: var(--gap-9);
+  text-align: center;
+  color: var(--ink-soft);
+  font-size: 14px;
+}
+
+@media (max-width: 780px) {
+  .site-nav-shell,
+  .landing,
+  .section,
+  .page-header,
+  .thread-page,
+  .step-panel {
+    padding-left: var(--gap-4);
+    padding-right: var(--gap-4);
+  }
+
+  .site-nav__links {
+    display: none;
+  }
+
+  .landing__title {
+    font-size: 42px;
+  }
+
+  .page-header__title {
+    font-size: 30px;
+  }
+
+  .step-panel__title {
+    font-size: 26px;
+  }
+
+  .composer {
+    flex-direction: column;
+  }
+
+  .composer button {
+    width: 100%;
+  }
+
+  .section--intro {
+    grid-template-columns: 1fr;
+  }
+
+  .info-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .thread__bubble {
+    max-width: 90%;
+  }
+}
