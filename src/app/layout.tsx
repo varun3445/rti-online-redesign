@@ -42,7 +42,8 @@ export const metadata: Metadata = {
   title: "RTI Online BWMI 26",
   description: "RTI Online portal for Build What Moves India 2026 by Varun Srivathsan.",
   icons: {
-    icon: "https://cdn.ux4g.gov.in/UX4G@3.0.18/assets/images/national_emblem.svg",
+    icon: [{ url: "https://cdn.ux4g.gov.in/UX4G@3.0.18/assets/images/national_emblem.svg", type: "image/svg+xml" }],
+    shortcut: "https://cdn.ux4g.gov.in/UX4G@3.0.18/assets/images/national_emblem.svg",
   },
 };
 
