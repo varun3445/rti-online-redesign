@@ -46,37 +46,46 @@ export default function ViewHistoryPage() {
     <main>
       <Nav />
 
-      <section className="page-header">
-        <span className="landing__eyebrow">EVERYTHING YOU&rsquo;VE FILED</span>
-        <h1 className="page-header__title">
+      <section className="ux4g-container ux4g-py-2xl">
+        <span className="ux4g-label-m-strong ux4g-text-primary">EVERYTHING YOU&rsquo;VE FILED</span>
+        <h1 className="ux4g-heading-xl-strong ux4g-my-m">
           Look it up by <em>email.</em>
         </h1>
-        <p className="page-header__lede">
+        <p className="ux4g-body-m-default ux4g-text-neutral-secondary">
           No password to remember — we look up your filing history by the
           email you used to file. It's the same view as{" "}
-          <Link href="/my-rti" className="text-link">
+          <Link href="/my-rti" className="ux4g-text-link-md">
             My RTI
           </Link>
           , with a quick lookup step in front of it.
         </p>
       </section>
 
-      <section className="section">
+      <section className="ux4g-container ux4g-py-2xl">
         {!unlocked ? (
-          <form className="composer lookup-form" onSubmit={onSubmit}>
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="the email you filed with"
-            />
-            <button type="submit" disabled={loading}>
+          <form onSubmit={onSubmit}>
+            <div className="ux4g-input-container ux4g-input-md">
+              <label className="ux4g-label-m-default" htmlFor="history-email">
+                Email
+              </label>
+              <div className="ux4g-input">
+                <input
+                  id="history-email"
+                  className="ux4g-input-input"
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="the email you filed with"
+                />
+              </div>
+            </div>
+            <button type="submit" className="ux4g-btn-primary ux4g-btn-md ux4g-mt-m" disabled={loading}>
               {loading ? "Looking up…" : "Look up →"}
             </button>
           </form>
         ) : (
           <>
-            <p className="lookup-samples">
+            <p className="ux4g-body-s-default ux4g-text-neutral-secondary ux4g-mb-m">
               {cameFromFiling ? (
                 <>
                   Recognized <b>{email}</b> from the request you just filed

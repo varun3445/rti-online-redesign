@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Nav } from "@/components/Nav";
 import { Footer } from "@/components/Footer";
 import { mockRtiCases } from "@/lib/mock-rti-cases";
-import { STATE_LABEL, STATE_TOKEN, headlineState, summaryLine } from "@/lib/case-status";
+import { STATE_LABEL, STATE_TOKEN, STATE_TAG_VARIANT, headlineState, summaryLine } from "@/lib/case-status";
 import type { RtiCase } from "@/lib/rti-case.schema";
 
 const SAMPLE_IDS = mockRtiCases.map((c) => c.id);
@@ -38,102 +38,119 @@ export default function ViewStatusPage() {
     <main>
       <Nav />
 
-      <section className="page-header">
-        <span className="landing__eyebrow">CHECK ONE CASE</span>
-        <h1 className="page-header__title">
+      <section className="ux4g-container ux4g-py-2xl">
+        <span className="ux4g-label-m-strong ux4g-text-primary">CHECK ONE CASE</span>
+        <h1 className="ux4g-heading-xl-strong ux4g-my-m">
           Enter your <em>registration number.</em>
         </h1>
-        <p className="page-header__lede">
+        <p className="ux4g-body-m-default ux4g-text-neutral-secondary">
           Filed something just now? Its registration number works here.
           Otherwise, try one of the sample numbers below.
         </p>
       </section>
 
-      <section className="section">
-        <form className="composer lookup-form" onSubmit={onSubmit}>
+      <section className="ux4g-container ux4g-py-2xl">
+        <form className="ux4g-search" onSubmit={onSubmit}>
+          <span className="ux4g-icon-outlined ux4g-search-leading-icon">search</span>
           <input
+            className="ux4g-search-input"
+            aria-label="Registration number"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="e.g. RTI-2026-0002"
           />
-          <button type="submit" disabled={loading}>
-            {loading ? "Checking…" : "Check status →"}
+          <button type="submit" className="ux4g-search-btn" disabled={loading} aria-label="Check status">
+            <span className="ux4g-icon-outlined">arrow_forward</span>
           </button>
         </form>
 
-        <p className="lookup-samples">
-          Sample numbers:{" "}
-          {SAMPLE_IDS.map((id, i) => (
-            <span key={id}>
-              <button
-                type="button"
-                className="lookup-samples__chip"
-                onClick={() => {
-                  setQuery(id);
-                  runLookup(id);
-                }}
-              >
-                {id}
-              </button>
-              {i < SAMPLE_IDS.length - 1 ? " " : ""}
-            </span>
+        <div className="ux4g-d-flex ux4g-ai-center ux4g-flex-wrap ux4g-gap-2xs ux4g-mt-s">
+          <span className="ux4g-body-s-default ux4g-text-neutral-secondary">Sample numbers:</span>
+          {SAMPLE_IDS.map((id) => (
+            <button
+              key={id}
+              type="button"
+              className="ux4g-tag-outline-neutral ux4g-d-inline-flex"
+              onClick={() => {
+                setQuery(id);
+                runLookup(id);
+              }}
+            >
+              {id}
+            </button>
           ))}
-        </p>
+        </div>
 
         {searched && !loading && !result && (
-          <div className="artifact">
-            <p className="artifact__meta">
+          <div className="ux4g-context-alert ux4g-alert-info ux4g-mt-m">
+            <i className="ux4g-icon ux4g-alert-icon">info</i>
+            <div className="ux4g-alert-message">
               No case found for &ldquo;{query}&rdquo;. Try one of the sample
               numbers above.
-            </p>
+            </div>
           </div>
         )}
 
         {result && headline && (
-          <article className={`case-card case-card--${STATE_TOKEN[headline]} view-status-result`}>
-            <span className={`status-chip status-chip--${STATE_TOKEN[headline]}`}>
-              {STATE_LABEL[headline]}
-            </span>
-            <h2>{result.subject}</h2>
-            <p className="case-card__authority">{result.authority.name}</p>
-            <p className="case-card__summary">{summaryLine(result)}</p>
+          <article className="ux4g-card ux4g-card-outline ux4g-card-vertical ux4g-shadow-l2 ux4g-mt-m">
+            <div className="ux4g-card-body">
+              <span className={`ux4g-tag-tonal-${STATE_TAG_VARIANT[headline]}`}>
+                {STATE_LABEL[headline]}
+              </span>
+              <h2 className="ux4g-card-title ux4g-mt-xs">{result.subject}</h2>
+              <p className="ux4g-body-s-default ux4g-text-neutral-secondary">
+                {result.authority.name}
+              </p>
+              <p className="ux4g-body-s-default ux4g-text-neutral-secondary ux4g-mt-xs">
+                {summaryLine(result)}
+              </p>
 
-            {result.subRecords.length > 0 && (
-              <ul className="case-card__subrecords">
-                {result.subRecords.map((sub) => (
-                  <li key={sub.id}>
-                    <span
-                      className={`status-dot status-dot--${STATE_TOKEN[sub.state]}`}
-                      aria-hidden="true"
-                    />
-                    {sub.authority.name} &mdash; {STATE_LABEL[sub.state]}
-                  </li>
-                ))}
-              </ul>
-            )}
+              {result.subRecords.length > 0 && (
+                <ul className="ux4g-mt-m" style={{ listStyle: "none", padding: 0 }}>
+                  {result.subRecords.map((sub) => (
+                    <li
+                      key={sub.id}
+                      className="ux4g-d-flex ux4g-ai-center ux4g-gap-2xs ux4g-body-s-default ux4g-py-xs"
+                    >
+                      <span className={`ux4g-tag-tonal-${STATE_TAG_VARIANT[sub.state]}`}>
+                        {STATE_LABEL[sub.state]}
+                      </span>
+                      {sub.authority.name}
+                    </li>
+                  ))}
+                </ul>
+              )}
 
-            <div className="timeline">
-              <span className="artifact__label">TIMELINE</span>
-              <ul className="timeline__list">
-                {result.events.map((event, i) => (
-                  <li key={i} className="timeline__item">
-                    <span
-                      className={`status-dot status-dot--${STATE_TOKEN[event.state]}`}
-                      aria-hidden="true"
-                    />
-                    <div>
-                      <p className="timeline__message">{event.message}</p>
-                      <p className="timeline__date">
-                        {new Date(event.occurredAt).toLocaleDateString("en-IN", {
-                          day: "numeric",
-                          month: "short",
-                          year: "numeric",
-                        })}
-                      </p>
+              <div className="ux4g-mt-l">
+                <h3 className="ux4g-label-s-strong ux4g-text-primary">TIMELINE</h3>
+                <div className="ux4g-journey-timeline ux4g-journey-timeline--vertical ux4g-mt-s">
+                  {result.events.map((event, i) => (
+                    <div
+                      key={i}
+                      className={`ux4g-journey-step${i === result.events.length - 1 ? " ux4g-journey-step-active" : " ux4g-journey-step-completed"}`}
+                    >
+                      <div className="ux4g-journey-indicator">
+                        <span className="ux4g-icon-outlined">check</span>
+                      </div>
+                      <div className="ux4g-journey-card ux4g-journey-card--standard">
+                        <div className="ux4g-journey-info">
+                          <span className="ux4g-journey-date">
+                            {new Date(event.occurredAt).toLocaleDateString("en-IN", {
+                              day: "numeric",
+                              month: "short",
+                              year: "numeric",
+                            })}
+                          </span>
+                          <span className="ux4g-journey-title">{event.message}</span>
+                          <span className={`ux4g-tag-tonal-${STATE_TAG_VARIANT[event.state]}`}>
+                            {STATE_LABEL[event.state]}
+                          </span>
+                        </div>
+                      </div>
                     </div>
-                  </li>
-                ))}
-              </ul>
+                  ))}
+                </div>
+              </div>
             </div>
           </article>
         )}

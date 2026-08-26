@@ -19,6 +19,16 @@ export const STATE_TOKEN: Record<CaseLifecycleState, string> = {
   "transferred-to-other-authority": "transferred",
 };
 
+// UX4G Tag semantic variant per state — `ux4g-tag-tonal-{variant}`.
+export const STATE_TAG_VARIANT: Record<CaseLifecycleState, string> = {
+  submitted: "info",
+  forwarded: "warning",
+  responded: "success",
+  "additional-payment-required": "warning",
+  "returned-to-applicant": "error",
+  "transferred-to-other-authority": "info",
+};
+
 // Lower number = more urgent / more deserving of being the headline status
 // when a case has fragmented into multiple sub-records.
 const URGENCY_RANK: Record<CaseLifecycleState, number> = {

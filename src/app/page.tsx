@@ -5,10 +5,10 @@ import Link from "next/link";
 import { Nav } from "@/components/Nav";
 import { Footer } from "@/components/Footer";
 import { whatIsRti, whatYouCanGet, howItWorksSteps } from "@/lib/rti-content";
-import { ClockIcon, DocumentIcon, ChatIcon, CoinsIcon, BuildingIcon, MapPinCheckIcon } from "@/components/icons";
 
-const EXAMPLE_ICONS = [ClockIcon, DocumentIcon, ChatIcon, CoinsIcon];
-const STEP_ICONS = [ChatIcon, BuildingIcon, CoinsIcon, MapPinCheckIcon];
+// UX4G Material Icons Outlined ligature names — see foundations/icons.css.
+const EXAMPLE_ICONS = ["schedule", "description", "chat", "payments"];
+const STEP_ICONS = ["chat", "account_balance", "payments", "task_alt"];
 
 type ChatMessage = { role: "user" | "assistant"; content: string };
 type Authority = { code: string; name: string; ministry: string };
@@ -31,7 +31,12 @@ function ThreadTyping() {
     }, 1400);
     return () => clearInterval(id);
   }, []);
-  return <div className="thread__typing">{LOADING_STAGES[stageIndex]}</div>;
+  return (
+    <div className="ux4g-d-flex ux4g-ai-center ux4g-gap-4xs ux4g-body-s-default ux4g-text-neutral-secondary">
+      <span className="ux4g-spinner-primary-full ux4g-spinner-sm" aria-hidden="true"></span>
+      {LOADING_STAGES[stageIndex]}
+    </div>
+  );
 }
 
 export default function Home() {
@@ -129,71 +134,93 @@ export default function Home() {
 
       {step === "home" && (
         <>
-          <section className="landing">
-            <span className="landing__eyebrow">RIGHT TO INFORMATION, MADE CLEAR</span>
-            <h1 className="landing__title">
-              <em>Simply</em> ask for what&rsquo;s yours.
-            </h1>
-            <p className="landing__lede">
-              Describe what you need in your own words. We&rsquo;ll turn it into a
-              clear request under the Right to Information Act, 2005.
-            </p>
-            <form className="composer composer--pill" onSubmit={startFromHome}>
-              <input
-                value={firstMessage}
-                onChange={(e) => setFirstMessage(e.target.value)}
-                placeholder="For example: why is my PF claim delayed?"
-              />
-              <button type="submit" className="composer__submit" aria-label="Start with this">
-                &uarr;
-              </button>
-            </form>
-            <small className="landing__hint">
-              Plain language in, a formatted RTI request out — powered by OpenAI.
-            </small>
+          <section className="ux4g-bg-primary-strong ux4g-py-4xl">
+            <div className="ux4g-container">
+              <span className="ux4g-tag-tonal-neutral ux4g-mb-m ux4g-d-inline-flex ux4g-ai-center ux4g-gap-2xs">
+                <i className="ux4g-icon-outlined ux4g-fs-16 ux4g-text-neutral-primary">auto_awesome</i>
+                AI-ASSISTED &middot; RIGHT TO INFORMATION, MADE CLEAR
+              </span>
+              <h1 className="ux4g-display-s-strong ux4g-text-neutral-inverse ux4g-my-m">
+                <em>Simply</em> ask for what&rsquo;s yours.
+              </h1>
+              <p className="ux4g-body-l-default ux4g-text-neutral-inverse ux4g-opacity-80 ux4g-mb-l">
+                Describe what you need in your own words. We&rsquo;ll turn it into a
+                clear request under the Right to Information Act, 2005.
+              </p>
+              <form
+                className="ux4g-search ux4g-search-lg ux4g-shadow-l4 ux4g-text-neutral-primary"
+                onSubmit={startFromHome}
+              >
+                <span className="ux4g-icon-outlined ux4g-search-leading-icon">edit</span>
+                <input
+                  className="ux4g-search-input"
+                  aria-label="Describe your RTI request"
+                  value={firstMessage}
+                  onChange={(e) => setFirstMessage(e.target.value)}
+                  placeholder="For example: why is my PF claim delayed?"
+                />
+                <button type="submit" className="ux4g-search-btn" aria-label="Start with this">
+                  <span className="ux4g-icon-outlined">arrow_upward</span>
+                </button>
+              </form>
+              <small className="ux4g-body-xs-default ux4g-text-neutral-inverse ux4g-opacity-70 ux4g-mt-s ux4g-d-block">
+                Plain language in, a formatted RTI request out — powered by OpenAI.
+              </small>
+            </div>
           </section>
 
-          <section id="how-it-works" className="section section--intro">
-            <span className="section__eyebrow">{whatIsRti.eyebrow}</span>
-            <h2 className="section__title">{whatIsRti.title}</h2>
-            <p className="section__body">{whatIsRti.body}</p>
-            <Link href="/how-it-works" className="button-link">
+          <section id="how-it-works" className="ux4g-container ux4g-py-2xl">
+            <span className="ux4g-label-m-strong ux4g-text-primary">{whatIsRti.eyebrow}</span>
+            <h2 className="ux4g-heading-l-strong ux4g-my-m">{whatIsRti.title}</h2>
+            <p className="ux4g-body-m-default ux4g-text-neutral-secondary ux4g-mb-m">
+              {whatIsRti.body}
+            </p>
+            <Link href="/how-it-works" className="ux4g-text-link-md">
               Read the full walkthrough &rarr;
             </Link>
           </section>
 
-          <section className="section">
-            <span className="section__eyebrow">WHAT YOU CAN ACTUALLY GET</span>
-            <div className="info-grid">
+          <section className="ux4g-container ux4g-py-2xl">
+            <h2 className="ux4g-label-m-strong ux4g-text-primary">WHAT YOU CAN ACTUALLY GET</h2>
+            <div className="ux4g-grid ux4g-grid-auto-fit-300 ux4g-gap-m ux4g-my-m">
               {whatYouCanGet.map((item, i) => {
-                const Icon = EXAMPLE_ICONS[i % EXAMPLE_ICONS.length];
+                const iconName = EXAMPLE_ICONS[i % EXAMPLE_ICONS.length];
                 return (
-                  <article key={item.title} className="info-card">
-                    <div className="info-card__icon">
-                      <Icon />
+                  <article key={item.title} className="ux4g-card ux4g-card-outline ux4g-card-vertical ux4g-shadow-l2">
+                    <div className="ux4g-card-body">
+                      <div className="ux4g-mb-s">
+                        <i className="ux4g-icon-outlined ux4g-fs-24 ux4g-text-primary" aria-hidden="true">
+                          {iconName}
+                        </i>
+                      </div>
+                      <h3 className="ux4g-card-title">{item.title}</h3>
+                      <p className="ux4g-body-s-strong ux4g-mt-s">{item.example}</p>
+                      <p className="ux4g-body-s-default ux4g-text-neutral-secondary">{item.note}</p>
                     </div>
-                    <h3>{item.title}</h3>
-                    <p className="info-card__quote">{item.example}</p>
-                    <p className="info-card__note">{item.note}</p>
                   </article>
                 );
               })}
             </div>
           </section>
 
-          <section className="section">
-            <span className="section__eyebrow">HOW IT WORKS</span>
-            <ol className="numbered-list">
+          <section className="ux4g-container ux4g-py-2xl">
+            <h2 className="ux4g-label-m-strong ux4g-text-primary">HOW IT WORKS</h2>
+            <ol className="ux4g-my-m" style={{ listStyle: "none", padding: 0 }}>
               {howItWorksSteps.map((s, i) => {
-                const Icon = STEP_ICONS[i % STEP_ICONS.length];
+                const iconName = STEP_ICONS[i % STEP_ICONS.length];
                 return (
-                  <li key={s.step} className="numbered-list__item">
-                    <span className="numbered-list__index">
-                      <Icon />
+                  <li
+                    key={s.step}
+                    className="ux4g-d-flex ux4g-gap-6xs ux4g-py-m"
+                  >
+                    <span>
+                      <i className="ux4g-icon-outlined ux4g-fs-24 ux4g-text-primary" aria-hidden="true">
+                        {iconName}
+                      </i>
                     </span>
                     <div>
-                      <h3>{s.title}</h3>
-                      <p>{s.body}</p>
+                      <h3 className="ux4g-title-s-strong">{s.title}</h3>
+                      <p className="ux4g-body-s-default ux4g-text-neutral-secondary">{s.body}</p>
                     </div>
                   </li>
                 );
@@ -204,16 +231,20 @@ export default function Home() {
       )}
 
       {step === "chat" && (
-        <section className="thread-page">
-          <span className="thread-page__eyebrow">DESCRIBE YOUR QUESTION</span>
+        <section className="ux4g-container ux4g-py-2xl">
+          <h1 className="ux4g-label-m-strong ux4g-text-primary">DESCRIBE YOUR QUESTION</h1>
 
-          <div className="thread">
+          <div className="thread ux4g-my-m">
             {messages.map((m, i) => (
               <div key={i} className={`thread__row thread__row--${m.role}`}>
                 <div>
                   <div className={`thread__bubble thread__bubble--${m.role}`}>{m.content}</div>
                   {m.role === "assistant" && i === messages.length - 1 && source && (
-                    <span className={`thread__source thread__source--${source}`}>
+                    <span
+                      className={
+                        source === "ai" ? "ux4g-tag-tonal-primary" : "ux4g-tag-tonal-neutral"
+                      }
+                    >
                       {source === "ai" ? "Answered by OpenAI" : "Answered by local matcher"}
                     </span>
                   )}
@@ -224,93 +255,149 @@ export default function Home() {
           </div>
 
           {authority && (
-            <div className="artifact artifact--authority">
-              <span className="artifact__label">LIKELY PUBLIC AUTHORITY</span>
-              <h2>{authority.name}</h2>
-              <p className="artifact__meta">{authority.ministry}</p>
+            <div className="ux4g-card ux4g-card-outline ux4g-card-vertical ux4g-shadow-l2 ux4g-my-m">
+              <div className="ux4g-card-body">
+                <span className="ux4g-label-s-strong ux4g-text-primary">
+                  LIKELY PUBLIC AUTHORITY
+                </span>
+                <h2 className="ux4g-card-title ux4g-mt-xs">{authority.name}</h2>
+                <p className="ux4g-body-s-default ux4g-text-neutral-secondary">
+                  {authority.ministry}
+                </p>
+              </div>
             </div>
           )}
 
           {draft && (
-            <div className="artifact">
-              <span className="artifact__label">YOUR EDITABLE DRAFT</span>
-              <textarea value={draft} onChange={(e) => setDraft(e.target.value)} />
-              <p className="artifact__meta">{draft.length} characters &middot; no character whitelist</p>
-              <button onClick={() => setStep("verify")}>Review &amp; continue &rarr;</button>
+            <div className="ux4g-textarea-container ux4g-textarea-lg ux4g-my-m">
+              <label className="ux4g-label-m-default" htmlFor="rti-draft">
+                YOUR EDITABLE DRAFT
+              </label>
+              <div className="ux4g-textarea">
+                <textarea
+                  id="rti-draft"
+                  className="ux4g-textarea-input"
+                  value={draft}
+                  onChange={(e) => setDraft(e.target.value)}
+                />
+                <div className="ux4g-textarea-counter">{draft.length} characters</div>
+              </div>
+              <div className="ux4g-textarea-helper">
+                <div className="ux4g-textarea-helper-left">
+                  <span className="ux4g-icon-outlined ux4g-textarea-helper-icon">info</span>
+                  <span className="ux4g-textarea-helper-text">No character whitelist</span>
+                </div>
+              </div>
+              <button
+                type="button"
+                className="ux4g-btn-primary ux4g-btn-md ux4g-mt-m"
+                onClick={() => setStep("verify")}
+              >
+                Review &amp; continue &rarr;
+              </button>
             </div>
           )}
 
-          {error && <p className="error-text thread-page__error">{error}</p>}
+          {error && (
+            <div className="ux4g-context-alert ux4g-alert-error ux4g-my-m">
+              <i className="ux4g-icon ux4g-alert-icon">error</i>
+              <div className="ux4g-alert-message">{error}</div>
+            </div>
+          )}
 
-          <form className="thread-composer" onSubmit={continueThread}>
+          <form className="ux4g-search ux4g-mt-m" onSubmit={continueThread}>
             <input
+              className="ux4g-search-input"
+              aria-label="Add more detail, or ask a follow-up"
               value={composerText}
               onChange={(e) => setComposerText(e.target.value)}
               placeholder="Add more detail, or ask a follow-up&hellip;"
               disabled={loading}
             />
-            <button type="submit" disabled={loading}>
-              Send
+            <button type="submit" className="ux4g-search-btn" disabled={loading} aria-label="Send">
+              <span className="ux4g-icon-outlined">send</span>
             </button>
           </form>
         </section>
       )}
 
       {step === "verify" && (
-        <section className="step-panel">
-          <span className="step-panel__eyebrow">STEP 2 OF 4</span>
-          <span className="step-panel__tag">MOCK IDENTITY CHECK &mdash; no real OTP is sent</span>
-          <h1 className="step-panel__title">
+        <section className="ux4g-container ux4g-py-2xl">
+          <span className="ux4g-label-m-strong ux4g-text-primary">STEP 2 OF 4</span>
+          <span className="ux4g-tag-tonal-warning ux4g-mt-xs ux4g-d-block" style={{ width: "fit-content" }}>
+            MOCK IDENTITY CHECK &mdash; no real OTP is sent
+          </span>
+          <h1 className="ux4g-heading-xl-strong ux4g-my-m">
             One check. <em>Then you&rsquo;re through.</em>
           </h1>
 
           {!otpSent ? (
             <>
-              <p>
+              <p className="ux4g-body-m-default ux4g-text-neutral-secondary ux4g-mb-m">
                 This is also the email your registration number and future
                 status updates will be tied to &mdash; including what you&rsquo;d
                 look up later in{" "}
-                <Link href="/view-history" className="text-link">
+                <Link href="/view-history" className="ux4g-text-link-md">
                   View History
                 </Link>
                 .
               </p>
               <form
-                className="composer lookup-form"
                 onSubmit={(e) => {
                   e.preventDefault();
                   if (!email.trim()) return;
                   setOtpSent(true);
                 }}
               >
-                <input
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="you@example.com"
-                />
-                <button type="submit">Send mock code &rarr;</button>
+                <div className="ux4g-input-container ux4g-input-md">
+                  <label className="ux4g-label-m-default" htmlFor="rti-email">
+                    Email
+                  </label>
+                  <div className="ux4g-input">
+                    <input
+                      id="rti-email"
+                      className="ux4g-input-input"
+                      type="email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      placeholder="you@example.com"
+                    />
+                  </div>
+                </div>
+                <button type="submit" className="ux4g-btn-primary ux4g-btn-md ux4g-mt-m">
+                  Send mock code &rarr;
+                </button>
               </form>
             </>
           ) : (
             <>
-              <p>
+              <p className="ux4g-body-m-default ux4g-text-neutral-secondary ux4g-mb-m">
                 Mock code sent to <b>{email}</b>. Nothing was really sent
                 &mdash; use <b>123456</b>.
               </p>
               <form
-                className="composer lookup-form"
                 onSubmit={(e) => {
                   e.preventDefault();
                   setStep("pay");
                 }}
               >
-                <input
-                  value={otpCode}
-                  onChange={(e) => setOtpCode(e.target.value)}
-                  placeholder="123456"
-                />
-                <button type="submit">Verify &rarr;</button>
+                <div className="ux4g-input-container ux4g-input-md">
+                  <label className="ux4g-label-m-default" htmlFor="rti-otp">
+                    One-time code
+                  </label>
+                  <div className="ux4g-input">
+                    <input
+                      id="rti-otp"
+                      className="ux4g-input-input"
+                      value={otpCode}
+                      onChange={(e) => setOtpCode(e.target.value)}
+                      placeholder="123456"
+                    />
+                  </div>
+                </div>
+                <button type="submit" className="ux4g-btn-primary ux4g-btn-md ux4g-mt-m">
+                  Verify &rarr;
+                </button>
               </form>
             </>
           )}
@@ -318,40 +405,61 @@ export default function Home() {
       )}
 
       {step === "pay" && (
-        <section className="step-panel">
-          <span className="step-panel__eyebrow">STEP 3 OF 4</span>
-          <span className="step-panel__tag">MOCK PAYMENT &mdash; no real transaction</span>
-          <h1 className="step-panel__title">&#8377;10 request fee</h1>
-          <p>
-            Non-BPL applicants pay &#8377;10. BPL applicants attaching a valid
+        <section className="ux4g-container ux4g-py-2xl">
+          <span className="ux4g-label-m-strong ux4g-text-primary">STEP 3 OF 4</span>
+          <span className="ux4g-tag-tonal-warning ux4g-mt-xs ux4g-d-block" style={{ width: "fit-content" }}>
+            MOCK PAYMENT &mdash; no real transaction
+          </span>
+          <h1 className="ux4g-heading-xl-strong ux4g-my-m">₹10 request fee</h1>
+          <p className="ux4g-body-m-default ux4g-text-neutral-secondary ux4g-mb-m">
+            Non-BPL applicants pay ₹10. BPL applicants attaching a valid
             BPL certificate pay no fee.
           </p>
-          <button onClick={finalizeCase} disabled={filing}>
-            {filing ? "Filing…" : "Pay ₹10 (mock) →"}
-          </button>{" "}
-          <button onClick={finalizeCase} disabled={filing}>
-            {filing ? "Filing…" : "Use BPL waiver →"}
-          </button>
+          <div className="ux4g-d-flex ux4g-gap-4xs ux4g-flex-wrap">
+            <button
+              type="button"
+              className="ux4g-btn-primary ux4g-btn-md"
+              onClick={finalizeCase}
+              disabled={filing}
+            >
+              {filing ? "Filing…" : "Pay ₹10 (mock) →"}
+            </button>
+            <button
+              type="button"
+              className="ux4g-btn-outline-primary ux4g-btn-md"
+              onClick={finalizeCase}
+              disabled={filing}
+            >
+              {filing ? "Filing…" : "Use BPL waiver →"}
+            </button>
+          </div>
         </section>
       )}
 
       {step === "done" && (
-        <section className="step-panel">
-          <span className="step-panel__eyebrow">STEP 4 OF 4</span>
-          <span className="step-panel__tag">MOCK CONFIRMATION &mdash; no real government request was filed</span>
-          <h1 className="step-panel__title">
+        <section className="ux4g-container ux4g-py-2xl">
+          <span className="ux4g-label-m-strong ux4g-text-primary">STEP 4 OF 4</span>
+          <span className="ux4g-tag-tonal-success ux4g-mt-xs ux4g-d-block" style={{ width: "fit-content" }}>
+            MOCK CONFIRMATION &mdash; no real government request was filed
+          </span>
+          <h1 className="ux4g-heading-xl-strong ux4g-my-m">
             Your request has a <em>home.</em>
           </h1>
-          <div className="artifact">
-            <span className="artifact__label">YOUR RTI CASE ID</span>
-            <h2>{caseId}</h2>
-            <p>
-              One citizen-facing case, even if a Nodal Officer forwards parts
-              to other CPIOs. Status updates go to <b>{email}</b>.
-            </p>
-            <Link href={`/view-history?email=${encodeURIComponent(email)}`}>
-              View in My RTI &rarr;
-            </Link>
+          <div className="ux4g-card ux4g-card-outline ux4g-card-vertical ux4g-shadow-l2">
+            <div className="ux4g-card-body">
+              <span className="ux4g-label-s-strong ux4g-text-primary">YOUR RTI CASE ID</span>
+              <h2 className="ux4g-card-title ux4g-mt-xs">{caseId}</h2>
+              <p className="ux4g-body-s-default ux4g-text-neutral-secondary ux4g-mt-s">
+                One citizen-facing case, even if a Nodal Officer forwards parts
+                to other CPIOs. Status updates go to <b>{email}</b>.
+              </p>
+              <Link
+                href={`/view-history?email=${encodeURIComponent(email)}`}
+                className="ux4g-text-link-md ux4g-mt-s ux4g-d-block"
+              >
+                View in My RTI &rarr;
+              </Link>
+            </div>
           </div>
         </section>
       )}

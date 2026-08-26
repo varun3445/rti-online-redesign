@@ -1,21 +1,6 @@
 import type { Metadata } from "next";
-import { Inter, Source_Serif_4 } from "next/font/google";
+import "ux4g-web-components/styles.css";
 import "./globals.css";
-
-const inter = Inter({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  variable: "--font-inter",
-  display: "swap",
-});
-
-const sourceSerif = Source_Serif_4({
-  subsets: ["latin"],
-  weight: ["400"],
-  style: ["normal", "italic"],
-  variable: "--font-source-serif",
-  display: "swap",
-});
 
 export const metadata: Metadata = {
   title: "RTI Online Redesign",
@@ -26,7 +11,7 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${inter.variable} ${sourceSerif.variable}`}>
+    <html lang="en" data-theme="light">
       <body>{children}</body>
     </html>
   );
