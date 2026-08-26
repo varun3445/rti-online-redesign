@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Bricolage_Grotesque } from "next/font/google";
+import { Bricolage_Grotesque, JetBrains_Mono } from "next/font/google";
 import { FigmaCaptureDev } from "@/components/FigmaCaptureDev";
 import "ux4g-web-components/styles.css";
 import "./globals.css";
@@ -15,6 +15,17 @@ const displayFont = Bricolage_Grotesque({
   display: "swap",
 });
 
+// Label/data face — eyebrows, badges, reference numbers, timestamps. Reads
+// as "structured, verifiable record," which mirrors what the product
+// actually does (plain language in, formatted request out). One weight
+// only; same mobile-payload reasoning as the display face above.
+const monoFont = JetBrains_Mono({
+  subsets: ["latin"],
+  weight: ["500"],
+  variable: "--font-mono",
+  display: "swap",
+});
+
 export const metadata: Metadata = {
   title: "RTI Online Redesign",
   description: "Mock RTI case-tracking prototype",
@@ -24,7 +35,7 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" data-theme="light" className={displayFont.variable}>
+    <html lang="en" data-theme="light" className={`${displayFont.variable} ${monoFont.variable}`}>
       <body>
         <FigmaCaptureDev />
         {children}

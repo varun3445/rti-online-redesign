@@ -15,7 +15,7 @@ export default function HowItWorksPage() {
 
       <Reveal>
         <section className="ux4g-container ux4g-py-2xl">
-          <span className="ux4g-label-m-strong ux4g-text-primary">
+          <span className="rti-mono-label ux4g-label-m-strong ux4g-text-primary">
             <span className="rti-motif-dot" aria-hidden="true"></span>
             {whatIsRti.eyebrow}
           </span>
@@ -26,9 +26,9 @@ export default function HowItWorksPage() {
 
       <Reveal>
         <section className="ux4g-container ux4g-py-2xl">
-          <h2 className="ux4g-label-m-strong ux4g-text-primary">
+          <h2 className="rti-mono-label ux4g-label-m-strong ux4g-text-primary">
             <span className="rti-motif-dot" aria-hidden="true"></span>
-            WHAT YOU CAN ACTUALLY GET
+            What You Can Actually Get
           </h2>
           <div className="ux4g-grid ux4g-grid-auto-fit-300 ux4g-gap-m ux4g-my-m">
             {whatYouCanGet.map((item, i) => {
@@ -39,8 +39,8 @@ export default function HowItWorksPage() {
                   className="ux4g-card ux4g-card-outline ux4g-card-vertical ux4g-shadow-l2 rti-card-lift"
                 >
                   <div className="ux4g-card-body">
-                    <div className="ux4g-mb-s">
-                      <i className="ux4g-icon-outlined ux4g-fs-24 ux4g-text-primary" aria-hidden="true">
+                    <div className="rti-icon-badge ux4g-mb-s">
+                      <i className="ux4g-icon-outlined ux4g-fs-20 ux4g-text-primary" aria-hidden="true">
                         {iconName}
                       </i>
                     </div>
@@ -57,9 +57,9 @@ export default function HowItWorksPage() {
 
       <Reveal>
         <section className="ux4g-container ux4g-py-2xl">
-          <h2 className="ux4g-label-m-strong ux4g-text-primary">
+          <h2 className="rti-mono-label ux4g-label-m-strong ux4g-text-primary">
             <span className="rti-motif-dot" aria-hidden="true"></span>
-            HOW A REQUEST MOVES THROUGH THIS TOOL
+            How a Request Moves Through This Tool
           </h2>
           <ol className="ux4g-my-m" style={{ listStyle: "none", padding: 0 }}>
             {howItWorksSteps.map((s, i) => {
@@ -83,7 +83,7 @@ export default function HowItWorksPage() {
       </Reveal>
 
       <Reveal>
-        <section className="ux4g-bg-primary-soft ux4g-py-2xl">
+        <section className="rti-band-soft ux4g-py-2xl">
           <div className="ux4g-container">
             <h2 className="rti-display ux4g-heading-l-strong">Have something specific you need?</h2>
             <p className="ux4g-body-m-default ux4g-text-neutral-secondary ux4g-mb-m">

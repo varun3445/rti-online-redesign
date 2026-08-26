@@ -200,6 +200,130 @@ html[data-font-scale="lg"] {
   transform: translateY(-2px);
 }
 
+/* ── UX4G V3: label face, hero depth, motif rhyming ─────────────────────
+   Same additive-only rule as V2 above. One more genuinely new value here
+   (the mono font) — disclosed for the same reason the display face and
+   glass tint were. Everything else (gradient stops, glow, badge circle)
+   is built from existing UX4G color/space/radius/opacity tokens. */
+
+/* Label/data face — eyebrow labels, badges, reference numbers, timestamps.
+   Loaded via next/font/google in layout.tsx as --font-mono; UX4G's own
+   Noto Sans stays untouched everywhere else, same pattern as --font-display. */
+.rti-mono {
+  font-family: var(--font-mono), ui-monospace, "SF Mono", monospace;
+  font-feature-settings: "tnum" 1;
+  letter-spacing: 0.02em;
+}
+
+.rti-mono-label {
+  font-family: var(--font-mono), ui-monospace, "SF Mono", monospace;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* Home hero depth — was a flat var(--ux4g-color-primary-600) fill. Same
+   token family, just the full scale instead of one flat stop, plus a
+   grain layer (inline SVG feTurbulence, no asset request) so the band
+   reads as textured rather than a solid color swatch. */
+.rti-hero {
+  position: relative;
+  background: linear-gradient(
+    160deg,
+    var(--ux4g-color-primary-600) 0%,
+    var(--ux4g-color-primary-800) 55%,
+    var(--ux4g-color-primary-900) 100%
+  );
+  overflow: hidden;
+}
+
+.rti-hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  opacity: var(--ux4g-opacity-10);
+  mix-blend-mode: overlay;
+  pointer-events: none;
+}
+
+.rti-hero::after {
+  content: "";
+  position: absolute;
+  top: -10rem;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 44rem;
+  height: 44rem;
+  border-radius: var(--ux4g-radius-full);
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.16), transparent 70%);
+  pointer-events: none;
+}
+
+.rti-hero > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Light-touch version of the same "not flat" treatment for the smaller
+   ux4g-bg-primary-soft CTA bands elsewhere (How it Works, Your Rights,
+   Manual, My RTI) — still primary-50/100, still light-on-light, just not
+   a single flat swatch. */
+.rti-band-soft {
+  background: linear-gradient(160deg, var(--ux4g-color-primary-50) 0%, var(--ux4g-color-primary-100) 100%);
+}
+
+/* Hero entrance — badge, heading, subhead, composer, caption fade/rise in
+   with a short stagger on load (the hero is above the fold, so this runs
+   once on mount rather than on scroll like .rti-reveal below). */
+@media (prefers-reduced-motion: no-preference) {
+  .rti-hero-enter {
+    opacity: 0;
+    animation: rti-hero-in 0.6s ease both;
+  }
+  .rti-hero-enter--1 { animation-delay: 0.05s; }
+  .rti-hero-enter--2 { animation-delay: 0.12s; }
+  .rti-hero-enter--3 { animation-delay: 0.19s; }
+  .rti-hero-enter--4 { animation-delay: 0.26s; }
+  .rti-hero-enter--5 { animation-delay: 0.33s; }
+}
+
+@keyframes rti-hero-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Glass treatment on the hero badge pill — was a flat ux4g-tag-tonal-neutral
+   fill; frosted so it sits into the new gradient/grain hero rather than
+   floating on top of it as an opaque gray chip. Same blur token the nav
+   already uses on scroll. */
+.rti-badge-glass {
+  background: rgba(255, 255, 255, 0.16);
+  backdrop-filter: blur(var(--ux4g-blur-2));
+  -webkit-backdrop-filter: blur(var(--ux4g-blur-2));
+  border: 1px solid rgba(255, 255, 255, 0.24);
+  color: var(--ux4g-color-neutral-0);
+}
+
+/* Card-icon rhyme — echoes .ux4g-journey-indicator's own circle-badge
+   shape (see CaseList.tsx), so the "What You Can Actually Get" cards read
+   as waypoints in the same visual family as the real journey timeline,
+   rather than introducing a second unrelated icon treatment. */
+.rti-icon-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--ux4g-space-10);
+  height: var(--ux4g-space-10);
+  border-radius: var(--ux4g-radius-full);
+  background: var(--ux4g-bg-primary-soft);
+}
+
 /* Scroll-reveal — marketing pages only (Home, How it Works, Your Rights,
    FAQ), never the composer/verify/pay/done flow or the case dashboard, per
    the lighter-touch scope for utility screens. Respects reduced-motion:

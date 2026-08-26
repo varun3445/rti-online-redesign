@@ -42,15 +42,15 @@ export function CaseList({ cases }: { cases: RtiCase[] }) {
               <div className="ux4g-result-list-info">
                 <div className="ux4g-result-list-title-group">
                   <div className="ux4g-result-list-meta ux4g-flex-wrap">
-                    <span className="ux4g-body-xs-default ux4g-result-list-id ux4g-min-w-0">
-                      <span className="ux4g-text-neutral-tertiary ux4g-label-s-default ux4g-mb-2xs ux4g-d-block">
+                    <span className="rti-mono ux4g-body-xs-default ux4g-result-list-id ux4g-min-w-0">
+                      <span className="rti-mono-label ux4g-text-neutral-tertiary ux4g-label-s-default ux4g-mb-2xs ux4g-d-block">
                         Reference Number
                       </span>
                       {c.id}
                     </span>
                     <span className="ux4g-divider-vertical"></span>
                     <span className="ux4g-label-m-strong ux4g-result-list-dept ux4g-min-w-0">
-                      <span className="ux4g-text-neutral-tertiary ux4g-label-s-default ux4g-mb-2xs ux4g-d-block">
+                      <span className="rti-mono-label ux4g-text-neutral-tertiary ux4g-label-s-default ux4g-mb-2xs ux4g-d-block">
                         Department
                       </span>
                       {c.authority.name}
@@ -90,7 +90,7 @@ export function CaseList({ cases }: { cases: RtiCase[] }) {
                             : `${sla.daysLeft} day${sla.daysLeft === 1 ? "" : "s"} left`}
                         </span>
                       </div>
-                      <span className="ux4g-label-s-default ux4g-text-neutral-secondary">
+                      <span className="rti-mono ux4g-label-s-default ux4g-text-neutral-secondary">
                         Expected by {expectedByDate(c.submittedAt)}
                       </span>
                     </div>
@@ -118,7 +118,7 @@ export function CaseList({ cases }: { cases: RtiCase[] }) {
               )}
 
               <div className="ux4g-mt-m">
-                <h3 className="ux4g-label-s-strong ux4g-text-primary">TIMELINE</h3>
+                <h3 className="rti-mono-label ux4g-label-s-strong ux4g-text-primary">Timeline</h3>
                 <div className="ux4g-journey-timeline ux4g-journey-timeline--vertical ux4g-mt-s">
                   {c.events.map((event, i) => (
                     <div
@@ -130,7 +130,7 @@ export function CaseList({ cases }: { cases: RtiCase[] }) {
                       </div>
                       <div className="ux4g-journey-card ux4g-journey-card--standard">
                         <div className="ux4g-journey-info">
-                          <span className="ux4g-journey-date">
+                          <span className="rti-mono ux4g-journey-date">
                             {new Date(event.occurredAt).toLocaleDateString("en-IN", {
                               day: "numeric",
                               month: "short",

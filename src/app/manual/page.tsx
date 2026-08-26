@@ -69,7 +69,7 @@ export default function ManualPage() {
         </ol>
       </section>
 
-      <section className="ux4g-bg-primary-soft ux4g-py-2xl">
+      <section className="rti-band-soft ux4g-py-2xl">
         <div className="ux4g-container">
           <h2 className="ux4g-heading-l-strong">Ready to try it?</h2>
           <p className="ux4g-body-m-default ux4g-text-neutral-secondary ux4g-mb-m">

@@ -14,7 +14,7 @@ export default async function MyRtiPage() {
       <Nav />
 
       <section className="ux4g-container ux4g-py-2xl">
-        <span className="ux4g-label-m-strong ux4g-text-primary">YOUR CASES, ONE VIEW</span>
+        <span className="rti-mono-label ux4g-label-m-strong ux4g-text-primary">Your Cases, One View</span>
         <h1 className="ux4g-heading-xl-strong ux4g-my-m">
           Every case. <em>One place.</em>
         </h1>
@@ -35,7 +35,7 @@ export default async function MyRtiPage() {
         <CaseList cases={cases} />
       </section>
 
-      <section className="ux4g-bg-primary-soft ux4g-py-2xl">
+      <section className="rti-band-soft ux4g-py-2xl">
         <div className="ux4g-container">
           <h2 className="ux4g-heading-l-strong">Filing something new?</h2>
           <p className="ux4g-body-m-default ux4g-text-neutral-secondary ux4g-mb-m">

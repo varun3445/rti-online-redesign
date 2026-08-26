@@ -11,9 +11,9 @@ export default function YourRightsPage() {
 
       <Reveal>
         <section className="ux4g-container ux4g-py-2xl">
-          <span className="ux4g-label-m-strong ux4g-text-primary">
+          <span className="rti-mono-label ux4g-label-m-strong ux4g-text-primary">
             <span className="rti-motif-dot" aria-hidden="true"></span>
-            UNDER THE RTI ACT, 2005
+            Under the RTI Act, 2005
           </span>
           <h1 className="rti-display ux4g-heading-xl-strong ux4g-my-m">
             The law is on your <em>side.</em>
@@ -44,7 +44,7 @@ export default function YourRightsPage() {
       </Reveal>
 
       <Reveal>
-        <section className="ux4g-bg-primary-soft ux4g-py-2xl">
+        <section className="rti-band-soft ux4g-py-2xl">
           <div className="ux4g-container">
             <h2 className="rti-display ux4g-heading-l-strong">Ready to use it?</h2>
             <p className="ux4g-body-m-default ux4g-text-neutral-secondary ux4g-mb-m">

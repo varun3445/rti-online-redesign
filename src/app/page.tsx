@@ -135,24 +135,24 @@ export default function Home() {
 
       {step === "home" && (
         <>
-          <section className="ux4g-bg-primary-strong ux4g-py-4xl">
+          <section className="rti-hero ux4g-py-4xl">
             <div className="ux4g-container ux4g-text-center">
-              <span className="ux4g-tag-tonal-neutral ux4g-mb-m ux4g-d-inline-flex ux4g-ai-center ux4g-gap-2xs">
-                <i className="ux4g-icon-outlined ux4g-fs-16 ux4g-text-neutral-primary">auto_awesome</i>
-                AI-ASSISTED &middot; RIGHT TO INFORMATION, MADE CLEAR
+              <span className="rti-mono-label rti-badge-glass rti-hero-enter rti-hero-enter--1 ux4g-mb-m ux4g-d-inline-flex ux4g-ai-center ux4g-gap-2xs" style={{ padding: "0.375rem 0.875rem", borderRadius: "var(--ux4g-radius-full)", fontSize: "var(--ux4g-fs-12)" }}>
+                <i className="ux4g-icon-outlined ux4g-fs-16">auto_awesome</i>
+                AI-Assisted &middot; Right to Information, Made Clear
               </span>
-              <h1 className="rti-display ux4g-heading-xl-strong ux4g-text-neutral-inverse ux4g-my-m">
+              <h1 className="rti-display rti-hero-enter rti-hero-enter--2 ux4g-heading-xl-strong ux4g-text-neutral-inverse ux4g-my-m">
                 Just ask for what&rsquo;s yours.
               </h1>
               <p
-                className="ux4g-body-m-default ux4g-text-neutral-inverse ux4g-opacity-80 ux4g-mb-l"
+                className="rti-hero-enter rti-hero-enter--3 ux4g-body-m-default ux4g-text-neutral-inverse ux4g-opacity-80 ux4g-mb-l"
                 style={{ maxWidth: "36rem", marginInline: "auto" }}
               >
                 Describe what you need in your own words. We&rsquo;ll turn it into a
                 clear request under the Right to Information Act, 2005.
               </p>
               <form
-                className="ux4g-search ux4g-search-lg rti-composer ux4g-text-neutral-primary"
+                className="ux4g-search ux4g-search-lg rti-composer rti-hero-enter rti-hero-enter--4 ux4g-text-neutral-primary"
                 onSubmit={startFromHome}
               >
                 <span className="ux4g-icon-outlined ux4g-search-leading-icon">auto_awesome</span>
@@ -167,7 +167,7 @@ export default function Home() {
                   <span className="ux4g-icon-outlined">arrow_upward</span>
                 </button>
               </form>
-              <small className="ux4g-body-xs-default ux4g-text-neutral-inverse ux4g-opacity-70 ux4g-mt-s ux4g-d-block">
+              <small className="rti-mono rti-hero-enter rti-hero-enter--5 ux4g-body-xs-default ux4g-text-neutral-inverse ux4g-opacity-70 ux4g-mt-s ux4g-d-block">
                 Plain language in, a formatted RTI request out — powered by OpenAI.
               </small>
             </div>
@@ -175,7 +175,7 @@ export default function Home() {
 
           <Reveal>
             <section id="how-it-works" className="ux4g-container ux4g-py-2xl">
-              <span className="ux4g-label-m-strong ux4g-text-primary">
+              <span className="rti-mono-label ux4g-label-m-strong ux4g-text-primary">
                 <span className="rti-motif-dot" aria-hidden="true"></span>
                 {whatIsRti.eyebrow}
               </span>
@@ -191,9 +191,9 @@ export default function Home() {
 
           <Reveal>
             <section className="ux4g-container ux4g-py-2xl">
-              <h2 className="ux4g-label-m-strong ux4g-text-primary">
+              <h2 className="rti-mono-label ux4g-label-m-strong ux4g-text-primary">
                 <span className="rti-motif-dot" aria-hidden="true"></span>
-                WHAT YOU CAN ACTUALLY GET
+                What You Can Actually Get
               </h2>
               <div className="ux4g-grid ux4g-grid-auto-fit-300 ux4g-gap-m ux4g-my-m">
                 {whatYouCanGet.map((item, i) => {
@@ -204,8 +204,8 @@ export default function Home() {
                       className="ux4g-card ux4g-card-outline ux4g-card-vertical ux4g-shadow-l2 rti-card-lift"
                     >
                       <div className="ux4g-card-body">
-                        <div className="ux4g-mb-s">
-                          <i className="ux4g-icon-outlined ux4g-fs-24 ux4g-text-primary" aria-hidden="true">
+                        <div className="rti-icon-badge ux4g-mb-s">
+                          <i className="ux4g-icon-outlined ux4g-fs-20 ux4g-text-primary" aria-hidden="true">
                             {iconName}
                           </i>
                         </div>
@@ -222,9 +222,9 @@ export default function Home() {
 
           <Reveal>
             <section className="ux4g-container ux4g-py-2xl">
-              <h2 className="ux4g-label-m-strong ux4g-text-primary">
+              <h2 className="rti-mono-label ux4g-label-m-strong ux4g-text-primary">
                 <span className="rti-motif-dot" aria-hidden="true"></span>
-                HOW IT WORKS
+                How It Works
               </h2>
               <ol className="ux4g-my-m" style={{ listStyle: "none", padding: 0 }}>
                 {howItWorksSteps.map((s, i) => {
@@ -254,7 +254,7 @@ export default function Home() {
 
       {step === "chat" && (
         <section className="ux4g-container ux4g-py-2xl">
-          <h1 className="ux4g-label-m-strong ux4g-text-primary">DESCRIBE YOUR QUESTION</h1>
+          <h1 className="rti-mono-label ux4g-label-m-strong ux4g-text-primary">Describe Your Question</h1>
 
           <div className="thread ux4g-my-m">
             {messages.map((m, i) => (
@@ -279,8 +279,8 @@ export default function Home() {
           {authority && (
             <div className="ux4g-card ux4g-card-outline ux4g-card-vertical ux4g-shadow-l2 ux4g-my-m">
               <div className="ux4g-card-body">
-                <span className="ux4g-label-s-strong ux4g-text-primary">
-                  LIKELY PUBLIC AUTHORITY
+                <span className="rti-mono-label ux4g-label-s-strong ux4g-text-primary">
+                  Likely Public Authority
                 </span>
                 <h2 className="ux4g-card-title ux4g-mt-xs">{authority.name}</h2>
                 <p className="ux4g-body-s-default ux4g-text-neutral-secondary">
@@ -292,8 +292,8 @@ export default function Home() {
 
           {draft && (
             <div className="ux4g-textarea-container ux4g-textarea-lg ux4g-my-m">
-              <label className="ux4g-label-m-default" htmlFor="rti-draft">
-                YOUR EDITABLE DRAFT
+              <label className="rti-mono-label ux4g-label-m-default" htmlFor="rti-draft">
+                Your Editable Draft
               </label>
               <div className="ux4g-textarea">
                 <textarea
@@ -345,7 +345,7 @@ export default function Home() {
 
       {step === "verify" && (
         <section className="ux4g-container ux4g-py-2xl">
-          <span className="ux4g-label-m-strong ux4g-text-primary">STEP 2 OF 4</span>
+          <span className="rti-mono-label ux4g-label-m-strong ux4g-text-primary">Step 2 of 4</span>
           <span className="ux4g-tag-tonal-warning ux4g-mt-xs ux4g-d-block" style={{ width: "fit-content" }}>
             MOCK IDENTITY CHECK &mdash; no real OTP is sent
           </span>
@@ -428,7 +428,7 @@ export default function Home() {
 
       {step === "pay" && (
         <section className="ux4g-container ux4g-py-2xl">
-          <span className="ux4g-label-m-strong ux4g-text-primary">STEP 3 OF 4</span>
+          <span className="rti-mono-label ux4g-label-m-strong ux4g-text-primary">Step 3 of 4</span>
           <span className="ux4g-tag-tonal-warning ux4g-mt-xs ux4g-d-block" style={{ width: "fit-content" }}>
             MOCK PAYMENT &mdash; no real transaction
           </span>
@@ -460,7 +460,7 @@ export default function Home() {
 
       {step === "done" && (
         <section className="ux4g-container ux4g-py-2xl">
-          <span className="ux4g-label-m-strong ux4g-text-primary">STEP 4 OF 4</span>
+          <span className="rti-mono-label ux4g-label-m-strong ux4g-text-primary">Step 4 of 4</span>
           <span className="ux4g-tag-tonal-success ux4g-mt-xs ux4g-d-block" style={{ width: "fit-content" }}>
             MOCK CONFIRMATION &mdash; no real government request was filed
           </span>
@@ -469,8 +469,8 @@ export default function Home() {
           </h1>
           <div className="ux4g-card ux4g-card-outline ux4g-card-vertical ux4g-shadow-l2">
             <div className="ux4g-card-body">
-              <span className="ux4g-label-s-strong ux4g-text-primary">YOUR RTI CASE ID</span>
-              <h2 className="ux4g-card-title ux4g-mt-xs">{caseId}</h2>
+              <span className="rti-mono-label ux4g-label-s-strong ux4g-text-primary">Your RTI Case ID</span>
+              <h2 className="rti-mono ux4g-card-title ux4g-mt-xs">{caseId}</h2>
               <p className="ux4g-body-s-default ux4g-text-neutral-secondary ux4g-mt-s">
                 One citizen-facing case, even if a Nodal Officer forwards parts
                 to other CPIOs. Status updates go to <b>{email}</b>.

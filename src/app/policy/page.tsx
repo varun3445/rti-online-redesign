@@ -7,7 +7,7 @@ export default function PolicyPage() {
       <Nav />
 
       <section className="ux4g-container ux4g-py-2xl">
-        <span className="ux4g-label-m-strong ux4g-text-primary">POLICY</span>
+        <span className="rti-mono-label ux4g-label-m-strong ux4g-text-primary">Policy</span>
         <h1 className="ux4g-heading-xl-strong ux4g-my-m">
           What actually happens <em>to your input.</em>
         </h1>

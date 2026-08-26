@@ -47,7 +47,7 @@ export default function ViewHistoryPage() {
       <Nav />
 
       <section className="ux4g-container ux4g-py-2xl">
-        <span className="ux4g-label-m-strong ux4g-text-primary">EVERYTHING YOU&rsquo;VE FILED</span>
+        <span className="rti-mono-label ux4g-label-m-strong ux4g-text-primary">Everything You&rsquo;ve Filed</span>
         <h1 className="ux4g-heading-xl-strong ux4g-my-m">
           Look it up by <em>email.</em>
         </h1>

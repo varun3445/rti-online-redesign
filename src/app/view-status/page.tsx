@@ -39,7 +39,7 @@ export default function ViewStatusPage() {
       <Nav />
 
       <section className="ux4g-container ux4g-py-2xl">
-        <span className="ux4g-label-m-strong ux4g-text-primary">CHECK ONE CASE</span>
+        <span className="rti-mono-label ux4g-label-m-strong ux4g-text-primary">Check One Case</span>
         <h1 className="ux4g-heading-xl-strong ux4g-my-m">
           Enter your <em>registration number.</em>
         </h1>
@@ -70,7 +70,7 @@ export default function ViewStatusPage() {
             <button
               key={id}
               type="button"
-              className="ux4g-tag-outline-neutral ux4g-d-inline-flex"
+              className="rti-mono ux4g-tag-outline-neutral ux4g-d-inline-flex"
               onClick={() => {
                 setQuery(id);
                 runLookup(id);
@@ -122,7 +122,7 @@ export default function ViewStatusPage() {
               )}
 
               <div className="ux4g-mt-l">
-                <h3 className="ux4g-label-s-strong ux4g-text-primary">TIMELINE</h3>
+                <h3 className="rti-mono-label ux4g-label-s-strong ux4g-text-primary">Timeline</h3>
                 <div className="ux4g-journey-timeline ux4g-journey-timeline--vertical ux4g-mt-s">
                   {result.events.map((event, i) => (
                     <div
@@ -134,7 +134,7 @@ export default function ViewStatusPage() {
                       </div>
                       <div className="ux4g-journey-card ux4g-journey-card--standard">
                         <div className="ux4g-journey-info">
-                          <span className="ux4g-journey-date">
+                          <span className="rti-mono ux4g-journey-date">
                             {new Date(event.occurredAt).toLocaleDateString("en-IN", {
                               day: "numeric",
                               month: "short",

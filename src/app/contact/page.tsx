@@ -7,7 +7,7 @@ export default function ContactPage() {
       <Nav />
 
       <section className="ux4g-container ux4g-py-2xl">
-        <span className="ux4g-label-m-strong ux4g-text-primary">CONTACT</span>
+        <span className="rti-mono-label ux4g-label-m-strong ux4g-text-primary">Contact</span>
         <h1 className="ux4g-heading-xl-strong ux4g-my-m">
           Where the help desk <em>would go.</em>
         </h1>

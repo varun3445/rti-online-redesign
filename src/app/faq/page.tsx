@@ -10,9 +10,9 @@ export default function FaqPage() {
 
       <Reveal>
         <section className="ux4g-container ux4g-py-2xl">
-          <span className="ux4g-label-m-strong ux4g-text-primary">
+          <span className="rti-mono-label ux4g-label-m-strong ux4g-text-primary">
             <span className="rti-motif-dot" aria-hidden="true"></span>
-            FREQUENTLY ASKED
+            Frequently Asked
           </span>
           <h1 className="rti-display ux4g-heading-xl-strong ux4g-my-m">
             Before you <em>ask us.</em>
