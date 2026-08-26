@@ -1,7 +1,21 @@
+"use client";
+
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import { FontSizeControl } from "@/components/FontSizeControl";
 
 export function Nav() {
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    function onScroll() {
+      setScrolled(window.scrollY > 8);
+    }
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
   return (
     <>
       <header className="ux4g-topbar" role="banner">
@@ -37,7 +51,7 @@ export function Nav() {
         </div>
       </header>
 
-      <nav className="ux4g-navbar">
+      <nav className={`ux4g-navbar${scrolled ? " rti-nav--elevated" : ""}`}>
         <div className="ux4g-container">
           <div className="ux4g-navbar-wrap">
             <Link href="/" className="ux4g-d-flex ux4g-ai-center ux4g-gap-4xs">

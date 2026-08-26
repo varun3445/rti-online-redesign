@@ -74,6 +74,16 @@ html[data-font-scale="lg"] {
   overflow-x: hidden;
 }
 
+/* UX4G's own shipped CSS actually defines a full border + border-radius:
+   var(--ux4g-radius-md) for .ux4g-result-list — but it's set in a cascade
+   layer that a later, unrelated layer's border-bottom-only rule beats,
+   leaving cards with sharp corners and only a bottom rule. Restoring
+   UX4G's own intended radius (not a new value) — our unlayered rule wins
+   over any @layer-wrapped UX4G rule regardless of source order. */
+.ux4g-result-list {
+  border-radius: var(--ux4g-radius-md);
+}
+
 /* Skip-to-content link — UX4G's own .ux4g-topbar__skip ships permanently
    visible (confirmed in the shipped CSS, no :focus variant). WCAG 2.4.1
    ("Bypass Blocks") calls for it to be visually hidden until keyboard
@@ -96,4 +106,114 @@ html[data-font-scale="lg"] {
   overflow: visible;
   clip: auto;
   white-space: normal;
+}
+
+/* ── UX4G V2: elevation layer ─────────────────────────────────────────
+   Everything below is additive on top of UX4G, not a replacement for it —
+   built from UX4G's own shadow/blur/radius/color tokens wherever one
+   exists. Two values are genuinely new (the glass tint alpha and the
+   display font) because UX4G has no token for either; both are disclosed
+   here rather than left looking like they came from the design system. */
+
+/* Display face — hero and marketing-page section headings only. Loaded
+   via next/font/google in layout.tsx as --font-display; UX4G's own Noto
+   Sans stays the typeface for every component, form, and body of text. */
+.rti-display {
+  font-family: var(--font-display), var(--ux4g-font-family-base, "Noto Sans"), system-ui, sans-serif;
+  letter-spacing: -0.02em; /* em, not px — scales down with font-size on mobile instead of staying a fixed too-tight value at small sizes */
+}
+
+/* The home hero's live AI composer — matches UX4G's own "AI Search Input"
+   component from the Figma library (node 2006:4941: white surface, a
+   purple auto_awesome leading icon, a circular purple submit button, a
+   soft two-layer shadow — no blur). Scaled up beyond ux4g-search-lg's 48px
+   default since this is the hero's one star element, using UX4G's own
+   font-size/spacing tokens for the enlargement. */
+.rti-composer {
+  background: var(--ux4g-color-neutral-0);
+  border: none;
+  border-radius: var(--ux4g-radius-full);
+  box-shadow: var(--ux4g-shadow-l3);
+  height: var(--ux4g-space-13); /* 4rem / 64px */
+  padding-inline: var(--ux4g-space-3);
+  max-width: 40rem;
+  margin-inline: auto;
+}
+
+.rti-composer .ux4g-search-input {
+  font-size: var(--ux4g-fs-18);
+}
+
+.rti-composer .ux4g-search-leading-icon {
+  color: var(--ux4g-text-brand-primary-default);
+}
+
+.rti-composer .ux4g-search-btn {
+  width: var(--ux4g-space-11); /* 3rem / 48px */
+  height: var(--ux4g-space-11);
+  border-radius: var(--ux4g-radius-full);
+}
+
+/* Sticky nav, glass only once content has scrolled beneath it — not a
+   permanent effect, and not the composer's heavier treatment. Toggled by
+   a scroll listener in Nav.tsx (IntersectionObserver-free here since it's
+   a binary scrolled/not-scrolled state, not per-element reveal). */
+.ux4g-navbar {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  transition: background-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.ux4g-navbar.rti-nav--elevated {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(var(--ux4g-blur-medium));
+  -webkit-backdrop-filter: blur(var(--ux4g-blur-medium));
+  box-shadow: var(--ux4g-shadow-l3);
+}
+
+/* Visual rhyming motif — echoes the Journey Timeline's own node shape
+   (.ux4g-journey-indicator: a filled circle, see CaseList.tsx/view-status)
+   as a small prefix dot on marketing-page eyebrow labels, so the one shape
+   that already carries meaning elsewhere on the site (a step is reached)
+   recurs as the site's visual signature, rather than introducing a new
+   unrelated shape. Primary-600, the same token driving the hero band. */
+.rti-motif-dot {
+  display: inline-block;
+  width: 0.375rem;
+  height: 0.375rem;
+  border-radius: var(--ux4g-radius-full);
+  background: var(--ux4g-color-primary-600);
+  margin-right: var(--ux4g-space-2);
+  vertical-align: middle;
+}
+
+/* Shadow escalation on hover — cards lift one level (l2 -> l3) using
+   UX4G's own shadow scale, the interactive-depth half of the elevation
+   system (the composer/nav above are the static half). */
+.rti-card-lift {
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.rti-card-lift:hover {
+  box-shadow: var(--ux4g-shadow-l3);
+  transform: translateY(-2px);
+}
+
+/* Scroll-reveal — marketing pages only (Home, How it Works, Your Rights,
+   FAQ), never the composer/verify/pay/done flow or the case dashboard, per
+   the lighter-touch scope for utility screens. Respects reduced-motion:
+   the no-preference block is the only place transform/opacity are set, so
+   a user with the OS setting on sees the final state immediately. */
+@media (prefers-reduced-motion: no-preference) {
+  .rti-reveal {
+    opacity: 0;
+    transform: translateY(12px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+
+  .rti-reveal.rti-reveal--visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

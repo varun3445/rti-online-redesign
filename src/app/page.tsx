@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Nav } from "@/components/Nav";
 import { Footer } from "@/components/Footer";
+import { Reveal } from "@/components/Reveal";
 import { whatIsRti, whatYouCanGet, howItWorksSteps } from "@/lib/rti-content";
 
 // UX4G Material Icons Outlined ligature names — see foundations/icons.css.
@@ -135,23 +136,26 @@ export default function Home() {
       {step === "home" && (
         <>
           <section className="ux4g-bg-primary-strong ux4g-py-4xl">
-            <div className="ux4g-container">
+            <div className="ux4g-container ux4g-text-center">
               <span className="ux4g-tag-tonal-neutral ux4g-mb-m ux4g-d-inline-flex ux4g-ai-center ux4g-gap-2xs">
                 <i className="ux4g-icon-outlined ux4g-fs-16 ux4g-text-neutral-primary">auto_awesome</i>
                 AI-ASSISTED &middot; RIGHT TO INFORMATION, MADE CLEAR
               </span>
-              <h1 className="ux4g-display-s-strong ux4g-text-neutral-inverse ux4g-my-m">
-                <em>Simply</em> ask for what&rsquo;s yours.
+              <h1 className="rti-display ux4g-heading-xl-strong ux4g-text-neutral-inverse ux4g-my-m">
+                Just ask for what&rsquo;s yours.
               </h1>
-              <p className="ux4g-body-l-default ux4g-text-neutral-inverse ux4g-opacity-80 ux4g-mb-l">
+              <p
+                className="ux4g-body-m-default ux4g-text-neutral-inverse ux4g-opacity-80 ux4g-mb-l"
+                style={{ maxWidth: "36rem", marginInline: "auto" }}
+              >
                 Describe what you need in your own words. We&rsquo;ll turn it into a
                 clear request under the Right to Information Act, 2005.
               </p>
               <form
-                className="ux4g-search ux4g-search-lg ux4g-shadow-l4 ux4g-text-neutral-primary"
+                className="ux4g-search ux4g-search-lg rti-composer ux4g-text-neutral-primary"
                 onSubmit={startFromHome}
               >
-                <span className="ux4g-icon-outlined ux4g-search-leading-icon">edit</span>
+                <span className="ux4g-icon-outlined ux4g-search-leading-icon">auto_awesome</span>
                 <input
                   className="ux4g-search-input"
                   aria-label="Describe your RTI request"
@@ -169,64 +173,82 @@ export default function Home() {
             </div>
           </section>
 
-          <section id="how-it-works" className="ux4g-container ux4g-py-2xl">
-            <span className="ux4g-label-m-strong ux4g-text-primary">{whatIsRti.eyebrow}</span>
-            <h2 className="ux4g-heading-l-strong ux4g-my-m">{whatIsRti.title}</h2>
-            <p className="ux4g-body-m-default ux4g-text-neutral-secondary ux4g-mb-m">
-              {whatIsRti.body}
-            </p>
-            <Link href="/how-it-works" className="ux4g-text-link-md">
-              Read the full walkthrough &rarr;
-            </Link>
-          </section>
+          <Reveal>
+            <section id="how-it-works" className="ux4g-container ux4g-py-2xl">
+              <span className="ux4g-label-m-strong ux4g-text-primary">
+                <span className="rti-motif-dot" aria-hidden="true"></span>
+                {whatIsRti.eyebrow}
+              </span>
+              <h2 className="rti-display ux4g-heading-l-strong ux4g-my-m">{whatIsRti.title}</h2>
+              <p className="ux4g-body-m-default ux4g-text-neutral-secondary ux4g-mb-m">
+                {whatIsRti.body}
+              </p>
+              <Link href="/how-it-works" className="ux4g-text-link-md">
+                Read the full walkthrough &rarr;
+              </Link>
+            </section>
+          </Reveal>
 
-          <section className="ux4g-container ux4g-py-2xl">
-            <h2 className="ux4g-label-m-strong ux4g-text-primary">WHAT YOU CAN ACTUALLY GET</h2>
-            <div className="ux4g-grid ux4g-grid-auto-fit-300 ux4g-gap-m ux4g-my-m">
-              {whatYouCanGet.map((item, i) => {
-                const iconName = EXAMPLE_ICONS[i % EXAMPLE_ICONS.length];
-                return (
-                  <article key={item.title} className="ux4g-card ux4g-card-outline ux4g-card-vertical ux4g-shadow-l2">
-                    <div className="ux4g-card-body">
-                      <div className="ux4g-mb-s">
+          <Reveal>
+            <section className="ux4g-container ux4g-py-2xl">
+              <h2 className="ux4g-label-m-strong ux4g-text-primary">
+                <span className="rti-motif-dot" aria-hidden="true"></span>
+                WHAT YOU CAN ACTUALLY GET
+              </h2>
+              <div className="ux4g-grid ux4g-grid-auto-fit-300 ux4g-gap-m ux4g-my-m">
+                {whatYouCanGet.map((item, i) => {
+                  const iconName = EXAMPLE_ICONS[i % EXAMPLE_ICONS.length];
+                  return (
+                    <article
+                      key={item.title}
+                      className="ux4g-card ux4g-card-outline ux4g-card-vertical ux4g-shadow-l2 rti-card-lift"
+                    >
+                      <div className="ux4g-card-body">
+                        <div className="ux4g-mb-s">
+                          <i className="ux4g-icon-outlined ux4g-fs-24 ux4g-text-primary" aria-hidden="true">
+                            {iconName}
+                          </i>
+                        </div>
+                        <h3 className="ux4g-card-title">{item.title}</h3>
+                        <p className="ux4g-body-s-strong ux4g-mt-s">{item.example}</p>
+                        <p className="ux4g-body-s-default ux4g-text-neutral-secondary">{item.note}</p>
+                      </div>
+                    </article>
+                  );
+                })}
+              </div>
+            </section>
+          </Reveal>
+
+          <Reveal>
+            <section className="ux4g-container ux4g-py-2xl">
+              <h2 className="ux4g-label-m-strong ux4g-text-primary">
+                <span className="rti-motif-dot" aria-hidden="true"></span>
+                HOW IT WORKS
+              </h2>
+              <ol className="ux4g-my-m" style={{ listStyle: "none", padding: 0 }}>
+                {howItWorksSteps.map((s, i) => {
+                  const iconName = STEP_ICONS[i % STEP_ICONS.length];
+                  return (
+                    <li
+                      key={s.step}
+                      className="ux4g-d-flex ux4g-gap-6xs ux4g-py-m"
+                    >
+                      <span>
                         <i className="ux4g-icon-outlined ux4g-fs-24 ux4g-text-primary" aria-hidden="true">
                           {iconName}
                         </i>
+                      </span>
+                      <div>
+                        <h3 className="ux4g-title-s-strong">{s.title}</h3>
+                        <p className="ux4g-body-s-default ux4g-text-neutral-secondary">{s.body}</p>
                       </div>
-                      <h3 className="ux4g-card-title">{item.title}</h3>
-                      <p className="ux4g-body-s-strong ux4g-mt-s">{item.example}</p>
-                      <p className="ux4g-body-s-default ux4g-text-neutral-secondary">{item.note}</p>
-                    </div>
-                  </article>
-                );
-              })}
-            </div>
-          </section>
-
-          <section className="ux4g-container ux4g-py-2xl">
-            <h2 className="ux4g-label-m-strong ux4g-text-primary">HOW IT WORKS</h2>
-            <ol className="ux4g-my-m" style={{ listStyle: "none", padding: 0 }}>
-              {howItWorksSteps.map((s, i) => {
-                const iconName = STEP_ICONS[i % STEP_ICONS.length];
-                return (
-                  <li
-                    key={s.step}
-                    className="ux4g-d-flex ux4g-gap-6xs ux4g-py-m"
-                  >
-                    <span>
-                      <i className="ux4g-icon-outlined ux4g-fs-24 ux4g-text-primary" aria-hidden="true">
-                        {iconName}
-                      </i>
-                    </span>
-                    <div>
-                      <h3 className="ux4g-title-s-strong">{s.title}</h3>
-                      <p className="ux4g-body-s-default ux4g-text-neutral-secondary">{s.body}</p>
-                    </div>
-                  </li>
-                );
-              })}
-            </ol>
-          </section>
+                    </li>
+                  );
+                })}
+              </ol>
+            </section>
+          </Reveal>
         </>
       )}
 
