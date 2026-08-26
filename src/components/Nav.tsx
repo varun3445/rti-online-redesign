@@ -11,6 +11,7 @@ import { cn } from "@/lib/cn";
 const LINKS = [
   { href: "/how-it-works", label: "How it works" },
   { href: "/your-rights", label: "Your rights" },
+  { href: "/view-status", label: "View Status" },
   { href: "/my-rti", label: "My RTI" },
 ];
 
