@@ -20,6 +20,29 @@ import { whatIsRti, howItWorksSteps } from "@/lib/rti-content";
 
 const STEP_ICONS = ["chat", "account_balance", "payments", "task_alt"];
 
+// English / Hindi / Tamil — the same line "jhanjhat" is borrowing from, in
+// each language rather than just the one word.
+const SUBHEAD_ROTATIONS = [
+  "Your right to information, without the jhanjhat.",
+  "सूचना का अधिकार, बिना झंझट के।",
+  "தகவல் அறியும் உரிமை, சிக்கல் இல்லாமல்.",
+];
+
+function RotatingSubhead() {
+  const [index, setIndex] = useState(0);
+  useEffect(() => {
+    const id = setInterval(() => setIndex((i) => (i + 1) % SUBHEAD_ROTATIONS.length), 2800);
+    return () => clearInterval(id);
+  }, []);
+  return (
+    <p className="mx-auto mt-4 min-h-12 max-w-xl text-base text-white/80">
+      <span key={index} className="inline-block motion-safe:animate-[subhead-fade_0.5s_ease]">
+        {SUBHEAD_ROTATIONS[index]}
+      </span>
+    </p>
+  );
+}
+
 // Same shape/JSX as the original whatYouCanGet import (title / example /
 // note), just swapped for the new brief's copy — kept to 4 items so the
 // existing 2x2 card grid doesn't have to change shape.
@@ -193,9 +216,7 @@ export default function Home() {
               <h1 className="font-[family-name:var(--font-display)] text-4xl font-bold text-white sm:text-5xl">
                 Bas bolo, aur ho jayega.
               </h1>
-              <p className="mx-auto mt-4 max-w-xl text-base text-white/80">
-                Your right to information, without the jhanjhat.
-              </p>
+              <RotatingSubhead />
               <div className="mt-8">
                 <SearchComposer
                   size="lg"
