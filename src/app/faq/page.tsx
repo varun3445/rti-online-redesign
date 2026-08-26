@@ -6,7 +6,7 @@ import { faqItems } from "@/lib/faq-content";
 
 export default function FaqPage() {
   return (
-    <main className="flex flex-1 flex-col">
+    <main id="main-content" tabIndex={-1} className="flex flex-1 flex-col outline-none">
       <Nav />
 
       <Reveal>

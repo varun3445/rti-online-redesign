@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Icon } from "./Icon";
 import { VoiceComposer } from "./VoiceComposer";
 import { cn } from "@/lib/cn";
@@ -51,10 +51,9 @@ export function SearchComposer({
   disabled?: boolean;
   className?: string;
   inputProps?: React.InputHTMLAttributes<HTMLInputElement>;
-  /** Adds a mic toggle that swaps the pill for a full-panel voice-input
-   * mode (Web Speech API). Defaults to text mode; only rendered once
-   * browser support is confirmed client-side, so it degrades to a plain
-   * text composer everywhere the API isn't available. */
+  /** Adds a Text/Voice mode toggle. Voice mode is purely visual — an
+   * orb + "Coming soon" label, no microphone access — so this is safe to
+   * show unconditionally rather than gated on browser API support. */
   voice?: boolean;
   /** "light" (default) is the solid-white pill used on light pages.
    * "dark" swaps it for the same translucent white-on-gradient treatment
@@ -64,23 +63,11 @@ export function SearchComposer({
 }) {
   const s = SIZE[size];
   const [mode, setMode] = useState<"text" | "voice">("text");
-  const [voiceSupported, setVoiceSupported] = useState(false);
-
-  useEffect(() => {
-    if (!voice) return;
-    const w = window as unknown as { SpeechRecognition?: unknown; webkitSpeechRecognition?: unknown };
-    setVoiceSupported(Boolean(w.SpeechRecognition || w.webkitSpeechRecognition));
-  }, [voice]);
 
   return (
     <div className={cn("flex w-full flex-col items-center", className)}>
       {mode === "voice" ? (
-        <VoiceComposer
-          onResult={(text) => {
-            onChange(text);
-            setMode("text");
-          }}
-        />
+        <VoiceComposer />
       ) : (
         <form
           onSubmit={onSubmit}
@@ -118,7 +105,7 @@ export function SearchComposer({
         </form>
       )}
 
-      {voice && voiceSupported && (
+      {voice && (
         <div className="mt-4 inline-flex items-center rounded-full border border-white/25 bg-white/10 p-1 text-xs font-medium">
           <button
             type="button"

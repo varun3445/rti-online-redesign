@@ -35,7 +35,7 @@ const steps = [
 
 export default function ManualPage() {
   return (
-    <main className="flex flex-1 flex-col">
+    <main id="main-content" tabIndex={-1} className="flex flex-1 flex-col outline-none">
       <Nav />
 
       <section className="mx-auto w-full max-w-3xl px-4 py-16 sm:px-6">

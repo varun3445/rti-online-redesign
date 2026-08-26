@@ -98,7 +98,7 @@ body {
   --color-status-submitted-bg: #c9f7f2; /* ux4g-color-cyan-100 */
   --color-status-submitted-fg: #006d75; /* ux4g-color-cyan-800 */
   --color-status-forwarded-bg: #fff2bf; /* ux4g-color-gold-100 */
-  --color-status-forwarded-fg: #b36b00; /* ux4g-color-gold-800 */
+  --color-status-forwarded-fg: #8f5600; /* darkened from ux4g-color-gold-800 (#b36b00, 3.73:1) to clear WCAG AA (5.35:1) against the gold-100 background */
   --color-status-responded-bg: #ddf8d8; /* ux4g-color-green-100 */
   --color-status-responded-fg: #00522c; /* ux4g-color-green-800 */
   --color-status-additional-payment-bg: #ffe7bf; /* ux4g-color-orange-100 */
