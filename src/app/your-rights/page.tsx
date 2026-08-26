@@ -1,42 +1,40 @@
-import Link from "next/link";
 import { Nav } from "@/components/Nav";
 import { Footer } from "@/components/Footer";
 import { Reveal } from "@/components/Reveal";
+import { Card } from "@/components/ui/Card";
+import { Button } from "@/components/ui/Button";
 import { yourRights } from "@/lib/rti-content";
 
 export default function YourRightsPage() {
   return (
-    <main>
+    <main className="flex flex-1 flex-col">
       <Nav />
 
       <Reveal>
-        <section className="ux4g-container ux4g-py-2xl">
-          <span className="rti-mono-label ux4g-label-m-strong ux4g-text-primary">
-            <span className="rti-motif-dot" aria-hidden="true"></span>
+        <section className="mx-auto w-full max-w-3xl px-4 py-16 sm:px-6">
+          <span className="flex items-center gap-1.5 font-mono text-xs font-semibold uppercase tracking-wide text-accent-600">
+            <span className="h-1.5 w-1.5 rounded-full bg-accent-600" aria-hidden="true" />
             Under the RTI Act, 2005
           </span>
-          <h1 className="rti-display ux4g-heading-xl-strong ux4g-my-m">
+          <h1 className="mt-3 font-[family-name:var(--font-display)] text-3xl font-bold text-neutral-900">
             The law is on your <em>side.</em>
           </h1>
-          <p className="ux4g-body-m-default ux4g-text-neutral-secondary">
-            Filing a request isn&rsquo;t asking for a favor — it&rsquo;s exercising a
-            legal right, with real obligations on the other end.
+          <p className="mt-3 text-neutral-600">
+            Filing a request isn&rsquo;t asking for a favor — it&rsquo;s exercising a legal right, with real obligations
+            on the other end.
           </p>
         </section>
       </Reveal>
 
       <Reveal>
-        <section className="ux4g-container ux4g-py-2xl">
-          <ul className="ux4g-grid ux4g-grid-auto-fit-300 ux4g-gap-m" style={{ listStyle: "none", padding: 0 }}>
+        <section className="mx-auto w-full max-w-5xl px-4 py-16 sm:px-6">
+          <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2" style={{ listStyle: "none", padding: 0 }}>
             {yourRights.map((r) => (
-              <li
-                key={r.title}
-                className="ux4g-card ux4g-card-outline ux4g-card-vertical ux4g-shadow-l2 rti-card-lift"
-              >
-                <div className="ux4g-card-body">
-                  <h3 className="ux4g-card-title">{r.title}</h3>
-                  <p className="ux4g-body-s-default ux4g-text-neutral-secondary ux4g-mt-s">{r.body}</p>
-                </div>
+              <li key={r.title} className="h-full">
+                <Card lift className="h-full">
+                  <h3 className="text-base font-semibold text-neutral-900">{r.title}</h3>
+                  <p className="mt-2 text-sm text-neutral-500">{r.body}</p>
+                </Card>
               </li>
             ))}
           </ul>
@@ -44,15 +42,15 @@ export default function YourRightsPage() {
       </Reveal>
 
       <Reveal>
-        <section className="rti-band-soft ux4g-py-2xl">
-          <div className="ux4g-container">
-            <h2 className="rti-display ux4g-heading-l-strong">Ready to use it?</h2>
-            <p className="ux4g-body-m-default ux4g-text-neutral-secondary ux4g-mb-m">
+        <section className="bg-gradient-to-br from-accent-50 to-accent-100 py-16">
+          <div className="mx-auto w-full max-w-3xl px-4 sm:px-6">
+            <h2 className="font-[family-name:var(--font-display)] text-2xl font-bold text-neutral-900">
+              Ready to use it?
+            </h2>
+            <p className="mt-2 mb-4 text-neutral-600">
               Describe your problem in plain language and we&rsquo;ll draft the request.
             </p>
-            <Link href="/" className="ux4g-btn-primary ux4g-btn-md">
-              Start a request &rarr;
-            </Link>
+            <Button href="/">Start a request &rarr;</Button>
           </div>
         </section>
       </Reveal>

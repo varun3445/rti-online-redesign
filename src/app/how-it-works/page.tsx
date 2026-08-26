@@ -1,54 +1,49 @@
-import Link from "next/link";
 import { Nav } from "@/components/Nav";
 import { Footer } from "@/components/Footer";
 import { Reveal } from "@/components/Reveal";
+import { Icon } from "@/components/ui/Icon";
+import { IconBadge } from "@/components/ui/IconBadge";
+import { Card } from "@/components/ui/Card";
+import { Button } from "@/components/ui/Button";
 import { whatIsRti, whatYouCanGet, howItWorksSteps } from "@/lib/rti-content";
 
-// UX4G Material Icons Outlined ligature names — see foundations/icons.css.
 const EXAMPLE_ICONS = ["schedule", "description", "chat", "payments"];
 const STEP_ICONS = ["chat", "account_balance", "payments", "task_alt"];
 
 export default function HowItWorksPage() {
   return (
-    <main>
+    <main className="flex flex-1 flex-col">
       <Nav />
 
       <Reveal>
-        <section className="ux4g-container ux4g-py-2xl">
-          <span className="rti-mono-label ux4g-label-m-strong ux4g-text-primary">
-            <span className="rti-motif-dot" aria-hidden="true"></span>
+        <section className="mx-auto w-full max-w-3xl px-4 py-16 sm:px-6">
+          <span className="flex items-center gap-1.5 font-mono text-xs font-semibold uppercase tracking-wide text-accent-600">
+            <span className="h-1.5 w-1.5 rounded-full bg-accent-600" aria-hidden="true" />
             {whatIsRti.eyebrow}
           </span>
-          <h1 className="rti-display ux4g-heading-xl-strong ux4g-my-m">{whatIsRti.title}</h1>
-          <p className="ux4g-body-m-default ux4g-text-neutral-secondary">{whatIsRti.body}</p>
+          <h1 className="mt-3 font-[family-name:var(--font-display)] text-3xl font-bold text-neutral-900">
+            {whatIsRti.title}
+          </h1>
+          <p className="mt-3 text-neutral-600">{whatIsRti.body}</p>
         </section>
       </Reveal>
 
       <Reveal>
-        <section className="ux4g-container ux4g-py-2xl">
-          <h2 className="rti-mono-label ux4g-label-m-strong ux4g-text-primary">
-            <span className="rti-motif-dot" aria-hidden="true"></span>
+        <section className="mx-auto w-full max-w-5xl px-4 py-16 sm:px-6">
+          <h2 className="flex items-center gap-1.5 font-mono text-xs font-semibold uppercase tracking-wide text-accent-600">
+            <span className="h-1.5 w-1.5 rounded-full bg-accent-600" aria-hidden="true" />
             What You Can Actually Get
           </h2>
-          <div className="ux4g-grid ux4g-grid-auto-fit-300 ux4g-gap-m ux4g-my-m">
+          <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2">
             {whatYouCanGet.map((item, i) => {
               const iconName = EXAMPLE_ICONS[i % EXAMPLE_ICONS.length];
               return (
-                <article
-                  key={item.title}
-                  className="ux4g-card ux4g-card-outline ux4g-card-vertical ux4g-shadow-l2 rti-card-lift"
-                >
-                  <div className="ux4g-card-body">
-                    <div className="rti-icon-badge ux4g-mb-s">
-                      <i className="ux4g-icon-outlined ux4g-fs-20 ux4g-text-primary" aria-hidden="true">
-                        {iconName}
-                      </i>
-                    </div>
-                    <h3 className="ux4g-card-title">{item.title}</h3>
-                    <p className="ux4g-body-s-strong ux4g-mt-s">{item.example}</p>
-                    <p className="ux4g-body-s-default ux4g-text-neutral-secondary">{item.note}</p>
-                  </div>
-                </article>
+                <Card key={item.title} lift>
+                  <IconBadge icon={iconName} className="mb-3" />
+                  <h3 className="text-base font-semibold text-neutral-900">{item.title}</h3>
+                  <p className="mt-2 text-sm font-medium text-neutral-800">{item.example}</p>
+                  <p className="mt-1 text-sm text-neutral-500">{item.note}</p>
+                </Card>
               );
             })}
           </div>
@@ -56,24 +51,20 @@ export default function HowItWorksPage() {
       </Reveal>
 
       <Reveal>
-        <section className="ux4g-container ux4g-py-2xl">
-          <h2 className="rti-mono-label ux4g-label-m-strong ux4g-text-primary">
-            <span className="rti-motif-dot" aria-hidden="true"></span>
+        <section className="mx-auto w-full max-w-3xl px-4 py-16 sm:px-6">
+          <h2 className="flex items-center gap-1.5 font-mono text-xs font-semibold uppercase tracking-wide text-accent-600">
+            <span className="h-1.5 w-1.5 rounded-full bg-accent-600" aria-hidden="true" />
             How a Request Moves Through This Tool
           </h2>
-          <ol className="ux4g-my-m" style={{ listStyle: "none", padding: 0 }}>
+          <ol className="mt-6 flex flex-col divide-y divide-neutral-200" style={{ listStyle: "none", padding: 0 }}>
             {howItWorksSteps.map((s, i) => {
               const iconName = STEP_ICONS[i % STEP_ICONS.length];
               return (
-                <li key={s.step} className="ux4g-d-flex ux4g-gap-6xs ux4g-py-m">
-                  <span>
-                    <i className="ux4g-icon-outlined ux4g-fs-24 ux4g-text-primary" aria-hidden="true">
-                      {iconName}
-                    </i>
-                  </span>
+                <li key={s.step} className="flex gap-4 py-4">
+                  <Icon name={iconName} size={24} className="mt-0.5 shrink-0 text-accent-600" />
                   <div>
-                    <h3 className="ux4g-title-s-strong">{s.title}</h3>
-                    <p className="ux4g-body-s-default ux4g-text-neutral-secondary">{s.body}</p>
+                    <h3 className="text-sm font-semibold text-neutral-900">{s.title}</h3>
+                    <p className="mt-1 text-sm text-neutral-500">{s.body}</p>
                   </div>
                 </li>
               );
@@ -83,15 +74,13 @@ export default function HowItWorksPage() {
       </Reveal>
 
       <Reveal>
-        <section className="rti-band-soft ux4g-py-2xl">
-          <div className="ux4g-container">
-            <h2 className="rti-display ux4g-heading-l-strong">Have something specific you need?</h2>
-            <p className="ux4g-body-m-default ux4g-text-neutral-secondary ux4g-mb-m">
-              Describe it in your own words and we&rsquo;ll take it from there.
-            </p>
-            <Link href="/" className="ux4g-btn-primary ux4g-btn-md">
-              Start a request &rarr;
-            </Link>
+        <section className="bg-gradient-to-br from-accent-50 to-accent-100 py-16">
+          <div className="mx-auto w-full max-w-3xl px-4 sm:px-6">
+            <h2 className="font-[family-name:var(--font-display)] text-2xl font-bold text-neutral-900">
+              Have something specific you need?
+            </h2>
+            <p className="mt-2 mb-4 text-neutral-600">Describe it in your own words and we&rsquo;ll take it from there.</p>
+            <Button href="/">Start a request &rarr;</Button>
           </div>
         </section>
       </Reveal>

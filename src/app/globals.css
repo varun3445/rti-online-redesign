@@ -1,12 +1,117 @@
-/* UX4G Design System (default theme) drives almost everything — see
-   ux4g-web-components/styles.css, imported in layout.tsx. What's left here
-   is only the handful of documented gaps the design system doesn't cover,
-   built from UX4G tokens rather than new hex/px values. */
+/* ══════════════════════════════════════════════════════════════════════
+   Custom Tailwind design system. Originally built on ux4g-web-components
+   (a real Indian government design system) — that package's component
+   markup/classes/JS runtime has been fully removed, but its actual design
+   tokens live on here as plain values: every color below is a real UX4G
+   hex value (verified against ux4g-web-components/styles/ux4g.css before
+   the package was removed), the body font is UX4G's own font-family-base
+   (Noto Sans), and the icon set (components/ui/Icon.tsx) is inline SVG
+   equivalents of the same Material Icons/Material Icons Outlined family
+   UX4G's own icon font was a renamed embed of. */
 
-/* Text-size control (Accessibility Bar A-/A/A+). UX4G's own values are
-   rem-based ("All values in rem for accessible scaling" — package docs),
-   so scaling the root font-size scales UX4G's components too, not just
-   this app's copy. */
+/* Preflight (Tailwind's CSS reset) was deliberately excluded while UX4G's
+   own reset was still active in parallel — importing both would have been
+   redundant and risked reset-vs-reset conflicts. Now that UX4G is fully
+   removed, preflight is the only reset in the page and is required —
+   without it there's no base body background/color and default browser
+   chrome (link underlines, native button borders) shows through. */
+@import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/preflight.css" layer(base);
+@import "tailwindcss/utilities.css" layer(utilities);
+
+body {
+  background: var(--color-neutral-0);
+  color: var(--color-neutral-900);
+}
+
+@theme {
+  /* Accent — UX4G's real primary/brand purple scale. */
+  --color-accent-50: #f2efff;
+  --color-accent-100: #dcd4ff;
+  --color-accent-200: #c0b3ff;
+  --color-accent-300: #a391ff;
+  --color-accent-400: #8670ff;
+  --color-accent-500: #6a4eff;
+  --color-accent-600: #4a2bc2;
+  --color-accent-700: #3d239f;
+  --color-accent-800: #301c7d;
+  --color-accent-900: #24145c;
+  --color-accent-950: #1a0e3d;
+
+  /* Neutral — UX4G's real neutral scale. */
+  --color-neutral-0: #ffffff;
+  --color-neutral-50: #fafafa;
+  --color-neutral-100: #f5f5f5;
+  --color-neutral-200: #e5e5e5;
+  --color-neutral-300: #d9d9d9;
+  --color-neutral-400: #a1a1a1;
+  --color-neutral-500: #737373;
+  --color-neutral-600: #525252;
+  --color-neutral-700: #404040;
+  --color-neutral-800: #262626;
+  --color-neutral-900: #171717;
+  --color-neutral-950: #0a0a0a;
+  --color-neutral-1000: #000000;
+
+  /* Radius — adds a full-pill value (Corra-style buttons/tags/composer) and
+     a 2xl value (PRM-style card corners) on top of Tailwind's defaults. */
+  --radius-2xl: 1.25rem;
+  --radius-full: 9999px;
+
+  /* Shadows — single-layer, hairline-border-first. Multi-layer box-shadows
+     are a known lossy spot in DOM-to-Figma capture, so elevation here is
+     mostly a 1px border (--shadow-hairline) with one soft lift shadow for
+     hover/emphasis, not graduated shadow weights. */
+  --shadow-hairline: 0 0 0 1px var(--color-neutral-200);
+  --shadow-sm: 0 1px 2px rgb(0 0 0 / 0.04);
+  --shadow-md: 0 4px 16px rgb(0 0 0 / 0.08);
+
+  /* Fonts — --font-body/--font-display/--font-mono are set as real CSS
+     custom properties on <html> by next/font/google (see layout.tsx); the
+     keys here just point Tailwind's font-* utilities at them. */
+  --font-sans: var(--font-body), "Noto Sans", system-ui, sans-serif;
+  --font-heading: var(--font-display), var(--font-body), "Noto Sans", system-ui, sans-serif;
+  --font-mono: var(--font-mono), ui-monospace, "SF Mono", monospace;
+}
+
+/* Status colors — one hue per CaseLifecycleState (src/lib/rti-case.schema.ts),
+   matching src/lib/case-status.ts's STATE_TOKEN keys. Each hue is a real
+   UX4G palette color, not invented — submitted/responded/
+   additional-payment-required/returned-to-applicant reuse the exact hues
+   UX4G's own info/success/warning/error tag variants already resolved to
+   (cyan/green/orange/red); forwarded and transferred-to-other-authority
+   get their own distinct real UX4G hues (gold, blue), since a 4-variant
+   tag system otherwise conflates them with warning/info respectively,
+   which reads ambiguous when RTI-2026-0002's 3 sub-record tags render
+   side by side.
+
+   Deliberately a plain :root block, NOT inside @theme above: Tailwind v4
+   only keeps @theme variables that are referenced by a literal utility
+   class name found via source-scanning (e.g. bg-accent-600, which IS used
+   as a className string throughout). These are only ever read via
+   var(--color-status-*) inside Tag.tsx's inline style — a pattern
+   Tailwind's scanner can't see — so under @theme they were silently
+   tree-shaken to nothing (bug found via computed-style check: every
+   status tag's background/color both resolved to an empty string). A
+   plain :root block sits outside that pipeline and always ships. */
+:root {
+  --color-status-submitted-bg: #c9f7f2; /* ux4g-color-cyan-100 */
+  --color-status-submitted-fg: #006d75; /* ux4g-color-cyan-800 */
+  --color-status-forwarded-bg: #fff2bf; /* ux4g-color-gold-100 */
+  --color-status-forwarded-fg: #b36b00; /* ux4g-color-gold-800 */
+  --color-status-responded-bg: #ddf8d8; /* ux4g-color-green-100 */
+  --color-status-responded-fg: #00522c; /* ux4g-color-green-800 */
+  --color-status-additional-payment-bg: #ffe7bf; /* ux4g-color-orange-100 */
+  --color-status-additional-payment-fg: #ad4e00; /* ux4g-color-orange-800 */
+  --color-status-returned-bg: #ffecee; /* ux4g-color-red-100 */
+  --color-status-returned-fg: #8a1a16; /* ux4g-color-red-800 */
+  --color-status-transferred-bg: #e7f2ff; /* ux4g-color-blue-100 */
+  --color-status-transferred-fg: #04409f; /* ux4g-color-blue-800 */
+}
+
+/* Text-size control (Accessibility Bar A-/A/A+, src/components/FontSizeControl.tsx).
+   Scaling the root font-size scales every rem-based component along with
+   it, not just app copy. */
 html[data-font-scale="sm"] {
   font-size: 0.9375rem; /* 15px */
 }
@@ -15,329 +120,42 @@ html[data-font-scale="lg"] {
   font-size: 1.1875rem; /* 19px */
 }
 
-/* Chat thread bubbles — no UX4G component for a conversational thread.
-   Built entirely from UX4G semantic tokens (colour, spacing, radius). */
-.thread {
-  display: flex;
-  flex-direction: column;
-  gap: var(--ux4g-space-6);
-}
-
-.thread__row {
-  display: flex;
-}
-
-.thread__row--user {
-  justify-content: flex-end;
-}
-
-.thread__row--assistant {
-  justify-content: flex-start;
-}
-
-.thread__bubble {
-  max-width: 40rem;
-  padding: var(--ux4g-space-6) var(--ux4g-space-8);
-  border-radius: var(--ux4g-radius-4);
-}
-
-.thread__bubble--user {
-  background: var(--ux4g-bg-neutral-stronger);
-  color: var(--ux4g-text-neutral-inverse);
-}
-
-.thread__bubble--assistant {
-  background: var(--ux4g-bg-neutral-soft);
-  color: var(--ux4g-text-neutral-primary);
-}
-
-.thread__typing {
-  color: var(--ux4g-text-neutral-secondary);
-}
-
-/* Result List v1's mobile collapse (display:contents on
-   .ux4g-result-list-content, defined in the shipped CSS) turns its content
-   into direct children of a 2-column grid. UX4G's own CSS special-cases
-   only its SLA/meta elements to span both columns at this breakpoint — our
-   summary text, sub-record list, and journey timeline aren't on that list,
-   so they land as ordinary grid children and get clipped to a single
-   ~half-width column. Span them explicitly with the same grid-column
-   technique UX4G uses for .ux4g-sla-linear. */
-@media (max-width: 768px) {
-  .ux4g-result-list-content > * {
-    grid-column: 1 / -1;
-  }
-}
-
-/* Sub-pixel bleed left over from that same collapse on narrow screens. */
-.ux4g-result-list {
-  overflow-x: hidden;
-}
-
-/* UX4G's own shipped CSS actually defines a full border + border-radius:
-   var(--ux4g-radius-md) for .ux4g-result-list — but it's set in a cascade
-   layer that a later, unrelated layer's border-bottom-only rule beats,
-   leaving cards with sharp corners and only a bottom rule. Restoring
-   UX4G's own intended radius (not a new value) — our unlayered rule wins
-   over any @layer-wrapped UX4G rule regardless of source order. */
-.ux4g-result-list {
-  border-radius: var(--ux4g-radius-md);
-}
-
-/* Skip-to-content link — UX4G's own .ux4g-topbar__skip ships permanently
-   visible (confirmed in the shipped CSS, no :focus variant). WCAG 2.4.1
-   ("Bypass Blocks") calls for it to be visually hidden until keyboard
-   focus reaches it, so sighted mouse/touch users aren't shown a link that
-   does nothing for them; Design.md holds the whole system to WCAG 2.1 AA,
-   so this is a compliance fix, not a stylistic override. */
-.ux4g-topbar__skip {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  overflow: hidden;
-  clip: rect(0 0 0 0);
-  white-space: nowrap;
-}
-
-.ux4g-topbar__skip:focus {
-  position: static;
-  width: auto;
-  height: auto;
-  overflow: visible;
-  clip: auto;
-  white-space: normal;
-}
-
-/* ── UX4G V2: elevation layer ─────────────────────────────────────────
-   Everything below is additive on top of UX4G, not a replacement for it —
-   built from UX4G's own shadow/blur/radius/color tokens wherever one
-   exists. Two values are genuinely new (the glass tint alpha and the
-   display font) because UX4G has no token for either; both are disclosed
-   here rather than left looking like they came from the design system. */
-
-/* Display face — hero and marketing-page section headings only. Loaded
-   via next/font/google in layout.tsx as --font-display; UX4G's own Noto
-   Sans stays the typeface for every component, form, and body of text. */
-.rti-display {
-  font-family: var(--font-display), var(--ux4g-font-family-base, "Noto Sans"), system-ui, sans-serif;
-  letter-spacing: -0.02em; /* em, not px — scales down with font-size on mobile instead of staying a fixed too-tight value at small sizes */
-}
-
-/* The home hero's live AI composer — matches UX4G's own "AI Search Input"
-   component from the Figma library (node 2006:4941: white surface, a
-   purple auto_awesome leading icon, a circular purple submit button, a
-   soft two-layer shadow — no blur). Scaled up beyond ux4g-search-lg's 48px
-   default since this is the hero's one star element, using UX4G's own
-   font-size/spacing tokens for the enlargement. */
-.rti-composer {
-  background: var(--ux4g-color-neutral-0);
-  border: none;
-  border-radius: var(--ux4g-radius-full);
-  box-shadow: var(--ux4g-shadow-l3);
-  height: var(--ux4g-space-13); /* 4rem / 64px */
-  padding-inline: var(--ux4g-space-3);
-  max-width: 40rem;
-  margin-inline: auto;
-}
-
-.rti-composer .ux4g-search-input {
-  font-size: var(--ux4g-fs-18);
-}
-
-.rti-composer .ux4g-search-leading-icon {
-  color: var(--ux4g-text-brand-primary-default);
-}
-
-.rti-composer .ux4g-search-btn {
-  width: var(--ux4g-space-11); /* 3rem / 48px */
-  height: var(--ux4g-space-11);
-  border-radius: var(--ux4g-radius-full);
-}
-
-/* Sticky nav, glass only once content has scrolled beneath it — not a
-   permanent effect, and not the composer's heavier treatment. Toggled by
-   a scroll listener in Nav.tsx (IntersectionObserver-free here since it's
-   a binary scrolled/not-scrolled state, not per-element reveal). */
-.ux4g-navbar {
-  position: sticky;
-  top: 0;
-  z-index: 40;
-  transition: background-color 0.2s ease, box-shadow 0.2s ease;
-}
-
-.ux4g-navbar.rti-nav--elevated {
-  background: rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(var(--ux4g-blur-medium));
-  -webkit-backdrop-filter: blur(var(--ux4g-blur-medium));
-  box-shadow: var(--ux4g-shadow-l3);
-}
-
-/* Visual rhyming motif — echoes the Journey Timeline's own node shape
-   (.ux4g-journey-indicator: a filled circle, see CaseList.tsx/view-status)
-   as a small prefix dot on marketing-page eyebrow labels, so the one shape
-   that already carries meaning elsewhere on the site (a step is reached)
-   recurs as the site's visual signature, rather than introducing a new
-   unrelated shape. Primary-600, the same token driving the hero band. */
-.rti-motif-dot {
-  display: inline-block;
-  width: 0.375rem;
-  height: 0.375rem;
-  border-radius: var(--ux4g-radius-full);
-  background: var(--ux4g-color-primary-600);
-  margin-right: var(--ux4g-space-2);
-  vertical-align: middle;
-}
-
-/* Shadow escalation on hover — cards lift one level (l2 -> l3) using
-   UX4G's own shadow scale, the interactive-depth half of the elevation
-   system (the composer/nav above are the static half). */
-.rti-card-lift {
-  transition: box-shadow 0.2s ease, transform 0.2s ease;
-}
-
-.rti-card-lift:hover {
-  box-shadow: var(--ux4g-shadow-l3);
-  transform: translateY(-2px);
-}
-
-/* ── UX4G V3: label face, hero depth, motif rhyming ─────────────────────
-   Same additive-only rule as V2 above. One more genuinely new value here
-   (the mono font) — disclosed for the same reason the display face and
-   glass tint were. Everything else (gradient stops, glow, badge circle)
-   is built from existing UX4G color/space/radius/opacity tokens. */
-
-/* Label/data face — eyebrow labels, badges, reference numbers, timestamps.
-   Loaded via next/font/google in layout.tsx as --font-mono; UX4G's own
-   Noto Sans stays untouched everywhere else, same pattern as --font-display. */
-.rti-mono {
-  font-family: var(--font-mono), ui-monospace, "SF Mono", monospace;
-  font-feature-settings: "tnum" 1;
-  letter-spacing: 0.02em;
-}
-
-.rti-mono-label {
-  font-family: var(--font-mono), ui-monospace, "SF Mono", monospace;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-
-/* Home hero depth — was a flat var(--ux4g-color-primary-600) fill. Same
-   token family, just the full scale instead of one flat stop, plus a
-   grain layer (inline SVG feTurbulence, no asset request) so the band
-   reads as textured rather than a solid color swatch. */
-.rti-hero {
+/* Voice-composer listening orb (SearchComposer's voice mode). A soft,
+   blurred aura built from overlapping radial gradients rather than a hard
+   conic-gradient disc — it should read as glowing light, not a spinning
+   pinwheel. The ::after layer is a larger, more-blurred copy of the same
+   gradients sitting behind it, bleeding outward as a halo; both breathe
+   in and out slightly out of phase so the glow feels alive without ever
+   visibly "spinning". */
+.voice-orb {
   position: relative;
-  background: linear-gradient(
-    160deg,
-    var(--ux4g-color-primary-600) 0%,
-    var(--ux4g-color-primary-800) 55%,
-    var(--ux4g-color-primary-900) 100%
-  );
-  overflow: hidden;
+  background:
+    radial-gradient(circle at 32% 28%, #b3a3ff 0%, transparent 60%),
+    radial-gradient(circle at 68% 38%, #5b8cff 0%, transparent 60%),
+    radial-gradient(circle at 50% 72%, #2dd4bf 0%, transparent 60%),
+    radial-gradient(circle at 50% 50%, #241a5c 0%, #1a0e3d 100%);
+  filter: blur(7px) saturate(1.25);
+  animation: voice-orb-breathe 4.5s ease-in-out infinite;
 }
 
-.rti-hero::before {
+.voice-orb::after {
   content: "";
   position: absolute;
-  inset: 0;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  opacity: var(--ux4g-opacity-10);
-  mix-blend-mode: overlay;
-  pointer-events: none;
+  inset: -35%;
+  z-index: -1;
+  border-radius: inherit;
+  background: inherit;
+  filter: blur(28px);
+  opacity: 0.6;
+  animation: voice-orb-breathe 4.5s ease-in-out infinite reverse;
 }
 
-.rti-hero::after {
-  content: "";
-  position: absolute;
-  top: -10rem;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 44rem;
-  height: 44rem;
-  border-radius: var(--ux4g-radius-full);
-  background: radial-gradient(circle, rgba(255, 255, 255, 0.16), transparent 70%);
-  pointer-events: none;
-}
-
-.rti-hero > * {
-  position: relative;
-  z-index: 1;
-}
-
-/* Light-touch version of the same "not flat" treatment for the smaller
-   ux4g-bg-primary-soft CTA bands elsewhere (How it Works, Your Rights,
-   Manual, My RTI) — still primary-50/100, still light-on-light, just not
-   a single flat swatch. */
-.rti-band-soft {
-  background: linear-gradient(160deg, var(--ux4g-color-primary-50) 0%, var(--ux4g-color-primary-100) 100%);
-}
-
-/* Hero entrance — badge, heading, subhead, composer, caption fade/rise in
-   with a short stagger on load (the hero is above the fold, so this runs
-   once on mount rather than on scroll like .rti-reveal below). */
-@media (prefers-reduced-motion: no-preference) {
-  .rti-hero-enter {
-    opacity: 0;
-    animation: rti-hero-in 0.6s ease both;
+@keyframes voice-orb-breathe {
+  0%,
+  100% {
+    transform: scale(1);
   }
-  .rti-hero-enter--1 { animation-delay: 0.05s; }
-  .rti-hero-enter--2 { animation-delay: 0.12s; }
-  .rti-hero-enter--3 { animation-delay: 0.19s; }
-  .rti-hero-enter--4 { animation-delay: 0.26s; }
-  .rti-hero-enter--5 { animation-delay: 0.33s; }
-}
-
-@keyframes rti-hero-in {
-  from {
-    opacity: 0;
-    transform: translateY(10px) scale(0.98);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
-}
-
-/* Glass treatment on the hero badge pill — was a flat ux4g-tag-tonal-neutral
-   fill; frosted so it sits into the new gradient/grain hero rather than
-   floating on top of it as an opaque gray chip. Same blur token the nav
-   already uses on scroll. */
-.rti-badge-glass {
-  background: rgba(255, 255, 255, 0.16);
-  backdrop-filter: blur(var(--ux4g-blur-2));
-  -webkit-backdrop-filter: blur(var(--ux4g-blur-2));
-  border: 1px solid rgba(255, 255, 255, 0.24);
-  color: var(--ux4g-color-neutral-0);
-}
-
-/* Card-icon rhyme — echoes .ux4g-journey-indicator's own circle-badge
-   shape (see CaseList.tsx), so the "What You Can Actually Get" cards read
-   as waypoints in the same visual family as the real journey timeline,
-   rather than introducing a second unrelated icon treatment. */
-.rti-icon-badge {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: var(--ux4g-space-10);
-  height: var(--ux4g-space-10);
-  border-radius: var(--ux4g-radius-full);
-  background: var(--ux4g-bg-primary-soft);
-}
-
-/* Scroll-reveal — marketing pages only (Home, How it Works, Your Rights,
-   FAQ), never the composer/verify/pay/done flow or the case dashboard, per
-   the lighter-touch scope for utility screens. Respects reduced-motion:
-   the no-preference block is the only place transform/opacity are set, so
-   a user with the OS setting on sees the final state immediately. */
-@media (prefers-reduced-motion: no-preference) {
-  .rti-reveal {
-    opacity: 0;
-    transform: translateY(12px);
-    transition: opacity 0.5s ease, transform 0.5s ease;
-  }
-
-  .rti-reveal.rti-reveal--visible {
-    opacity: 1;
-    transform: translateY(0);
+  50% {
+    transform: scale(1.1);
   }
 }

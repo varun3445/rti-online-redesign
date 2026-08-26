@@ -1,52 +1,46 @@
 import { Nav } from "@/components/Nav";
 import { Footer } from "@/components/Footer";
+import { Card } from "@/components/ui/Card";
 
 export default function ContactPage() {
   return (
-    <main>
+    <main className="flex flex-1 flex-col">
       <Nav />
 
-      <section className="ux4g-container ux4g-py-2xl">
-        <span className="rti-mono-label ux4g-label-m-strong ux4g-text-primary">Contact</span>
-        <h1 className="ux4g-heading-xl-strong ux4g-my-m">
+      <section className="mx-auto w-full max-w-3xl px-4 py-16 sm:px-6">
+        <span className="font-mono text-xs font-semibold uppercase tracking-wide text-accent-600">Contact</span>
+        <h1 className="mt-3 font-[family-name:var(--font-display)] text-3xl font-bold text-neutral-900">
           Where the help desk <em>would go.</em>
         </h1>
-        <p className="ux4g-body-m-default ux4g-text-neutral-secondary">
-          This page marks the spot in the finished product &mdash; it doesn&rsquo;t
-          route anywhere yet.
+        <p className="mt-3 text-neutral-600">
+          This page marks the spot in the finished product &mdash; it doesn&rsquo;t route anywhere yet.
         </p>
       </section>
 
-      <section className="ux4g-container ux4g-py-2xl">
-        <div className="ux4g-grid ux4g-grid-auto-fit-300 ux4g-gap-m">
-          <div className="ux4g-card ux4g-card-outline ux4g-card-vertical ux4g-shadow-l2">
-            <div className="ux4g-card-body">
-              <h3 className="ux4g-card-title">Have an actual RTI query?</h3>
-              <p className="ux4g-body-s-default ux4g-text-neutral-secondary ux4g-mt-s">
-                Go straight to{" "}
-                <a
-                  href="https://rtionline.gov.in"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="ux4g-text-link-md"
-                >
-                  rtionline.gov.in
-                </a>{" "}
-                &mdash; its own Contact Us page has the real helpline for the
-                government&rsquo;s portal.
-              </p>
-            </div>
-          </div>
-          <div className="ux4g-card ux4g-card-outline ux4g-card-vertical ux4g-shadow-l2">
-            <div className="ux4g-card-body">
-              <h3 className="ux4g-card-title">Have feedback on this redesign?</h3>
-              <p className="ux4g-body-s-default ux4g-text-neutral-secondary ux4g-mt-s">
-                This was built for the Build What Moves India hackathon &mdash;
-                send feedback through the hackathon&rsquo;s own channels rather
-                than here.
-              </p>
-            </div>
-          </div>
+      <section className="mx-auto w-full max-w-5xl px-4 pb-16 sm:px-6">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+          <Card>
+            <h3 className="text-base font-semibold text-neutral-900">Have an actual RTI query?</h3>
+            <p className="mt-2 text-sm text-neutral-500">
+              Go straight to{" "}
+              <a
+                href="https://rtionline.gov.in"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-medium text-accent-600"
+              >
+                rtionline.gov.in
+              </a>{" "}
+              &mdash; its own Contact Us page has the real helpline for the government&rsquo;s portal.
+            </p>
+          </Card>
+          <Card>
+            <h3 className="text-base font-semibold text-neutral-900">Have feedback on this redesign?</h3>
+            <p className="mt-2 text-sm text-neutral-500">
+              This was built for the Build What Moves India hackathon &mdash; send feedback through the
+              hackathon&rsquo;s own channels rather than here.
+            </p>
+          </Card>
         </div>
       </section>
 

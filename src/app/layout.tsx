@@ -1,8 +1,20 @@
 import type { Metadata } from "next";
-import { Bricolage_Grotesque, JetBrains_Mono } from "next/font/google";
+import { Bricolage_Grotesque, JetBrains_Mono, Noto_Sans } from "next/font/google";
 import { FigmaCaptureDev } from "@/components/FigmaCaptureDev";
-import "ux4g-web-components/styles.css";
 import "./globals.css";
+
+// Body face — UX4G's own font-family-base ("Noto Sans", system-ui,
+// sans-serif). We're dropping the ux4g-web-components package itself (its
+// component CSS/JS), but keeping its actual design tokens — colors and
+// this font — rather than inventing new ones. Self-hosted via
+// next/font/google so it stays reliably resolvable (real family name, not
+// a generic fallback) when the live site is captured into Figma.
+const bodyFont = Noto_Sans({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-body",
+  display: "swap",
+});
 
 // Display face for hero/section headlines only — UX4G's own Noto Sans
 // still drives every component, form, and body of text. Two weights only
@@ -35,8 +47,12 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" data-theme="light" className={`${displayFont.variable} ${monoFont.variable}`}>
-      <body>
+    <html
+      lang="en"
+      data-theme="light"
+      className={`${bodyFont.variable} ${displayFont.variable} ${monoFont.variable}`}
+    >
+      <body className="flex min-h-screen flex-col">
         <FigmaCaptureDev />
         {children}
       </body>

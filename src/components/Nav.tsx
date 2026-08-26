@@ -1,11 +1,23 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-import { FontSizeControl } from "@/components/FontSizeControl";
+import { AccessibilityBar } from "@/components/ui/AccessibilityBar";
+import { Button } from "@/components/ui/Button";
+import { Icon } from "@/components/ui/Icon";
+import { cn } from "@/lib/cn";
+
+const LINKS = [
+  { href: "/how-it-works", label: "How it works" },
+  { href: "/your-rights", label: "Your rights" },
+  { href: "/my-rti", label: "My RTI" },
+];
 
 export function Nav() {
   const [scrolled, setScrolled] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const pathname = usePathname();
 
   useEffect(() => {
     function onScroll() {
@@ -18,121 +30,88 @@ export function Nav() {
 
   return (
     <>
-      <header className="ux4g-topbar" role="banner">
-        <div className="ux4g-container">
-          <div className="ux4g-topbar__wrap ux4g-d-flex ux4g-jc-between ux4g-ai-center ux4g-flex-wrap ux4g-gap-xs">
-            <div>
-              <a
-                aria-label="Government of India (opens in new tab)"
-                className="ux4g-d-flex ux4g-ai-center"
-                href="https://www.india.gov.in/"
-                target="_blank"
-                rel="noopener"
-              >
-                <span className="ux4g-label-m-default">Government of India</span>
-                <sup className="ux4g-icon-outlined">open_in_new</sup>
-              </a>
-            </div>
-            <nav aria-label="Top utilities" className="ux4g-d-flex ux4g-ai-center ux4g-flex-wrap">
-              <a className="ux4g-label-m-default ux4g-topbar__skip" href="#main-content">
-                Skip to Main Content
-              </a>
-              <span className="ux4g-bl acc-top-divider"></span>
-              <FontSizeControl />
-              <span className="ux4g-bl acc-top-divider"></span>
-              <div className="ux4g-topbar__select">
-                <span className="ux4g-topbar__selectbtn ux4g-d-inline-flex ux4g-ai-center">
-                  <span className="ux4g-icon-outlined ux4g-top-bar-icon">language</span>
-                  <span className="ux4g-label-m-default">English</span>
-                </span>
-              </div>
-            </nav>
+      <AccessibilityBar />
+
+      <nav
+        className={cn(
+          "sticky top-0 z-40 transition-all duration-200",
+          scrolled ? "bg-white/85 shadow-[0_1px_0_var(--color-neutral-200)] backdrop-blur-md" : "bg-white"
+        )}
+      >
+        <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3 sm:px-6">
+          <Link
+            href="/"
+            onClick={(e) => {
+              // Home's step state (chat/verify/pay/done) lives in client
+              // state, not the URL — a same-route Link navigation doesn't
+              // remount the page or reset it. Force a real navigation so
+              // the logo reliably gets back to the actual start screen.
+              if (pathname === "/") {
+                e.preventDefault();
+                window.location.href = "/";
+              }
+            }}
+            className="flex items-center gap-2.5"
+          >
+            <img
+              src="https://cdn.ux4g.gov.in/UX4G@3.0.18/assets/images/national_emblem.svg"
+              alt="National Emblem"
+              className="h-8 w-8"
+            />
+            <span className="h-6 w-px bg-neutral-300" aria-hidden="true" />
+            <span className="font-medium text-neutral-900">RTI Online</span>
+          </Link>
+
+          <div className="hidden items-center gap-6 md:flex">
+            <ul className="flex items-center gap-5">
+              {LINKS.map((link) => (
+                <li key={link.href}>
+                  <Link href={link.href} className="text-sm text-neutral-700 hover:text-accent-600">
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+            <Button href="/" size="sm">
+              Start a request &rarr;
+            </Button>
           </div>
-        </div>
-      </header>
 
-      <nav className={`ux4g-navbar${scrolled ? " rti-nav--elevated" : ""}`}>
-        <div className="ux4g-container">
-          <div className="ux4g-navbar-wrap">
-            <Link href="/" className="ux4g-d-flex ux4g-ai-center ux4g-gap-4xs">
-              <img
-                src="https://cdn.ux4g.gov.in/UX4G@3.0.18/assets/images/national_emblem.svg"
-                alt="National Emblem"
-                className="ux4g-navbar-logo"
-              />
-              <span className="ux4g-divider-vertical"></span>
-              <span className="ux4g-label-m-strong">RTI Online</span>
-            </Link>
-
-            <div className="ux4g-navbar-desktop">
-              <div className="ux4g-d-flex ux4g-ai-center ux4g-gap-xs">
-                <ul className="ux4g-navbar-links">
-                  <li>
-                    <Link href="/how-it-works" className="ux4g-text-link-sm">
-                      How it works
-                    </Link>
-                  </li>
-                  <li>
-                    <Link href="/your-rights" className="ux4g-text-link-sm">
-                      Your rights
-                    </Link>
-                  </li>
-                  <li>
-                    <Link href="/my-rti" className="ux4g-text-link-sm">
-                      My RTI
-                    </Link>
-                  </li>
-                </ul>
-                <Link href="/" className="ux4g-btn-primary ux4g-btn-md">
-                  Start a request &rarr;
-                </Link>
-              </div>
-            </div>
-
-            <div className="ux4g-navbar-mobile">
-              <div className="ux4g-relative ux4g-d-flex ux4g-flex-col ux4g-gap-2xs">
-                <div className="ux4g-dropdown ux4g-dropdown-default ux4g-dropdown-overflow">
-                  <button
-                    aria-label="Open navigation menu"
-                    className="ux4g-dropdown-control ux4g-btn-outline-primary"
-                    type="button"
-                    data-ux-toggle="dropdown"
-                  >
-                    <span className="ux4g-icon-outlined">menu</span>
-                  </button>
-                  <div className="ux4g-dropdown-menu ux4g-shadow-l3" role="menu">
-                    <ul className="ux4g-list ux4g-list-default ux4g-list-m">
-                      <li className="ux4g-list-item" role="menuitem">
-                        <Link href="/how-it-works" className="ux4g-list-item-row">
-                          <span className="ux4g-list-item-start">
-                            <span>How it works</span>
-                          </span>
-                        </Link>
-                      </li>
-                      <li className="ux4g-list-item" role="menuitem">
-                        <Link href="/your-rights" className="ux4g-list-item-row">
-                          <span className="ux4g-list-item-start">
-                            <span>Your rights</span>
-                          </span>
-                        </Link>
-                      </li>
-                      <li className="ux4g-list-item" role="menuitem">
-                        <Link href="/my-rti" className="ux4g-list-item-row">
-                          <span className="ux4g-list-item-start">
-                            <span>My RTI</span>
-                          </span>
-                        </Link>
-                      </li>
-                    </ul>
-                    <div className="ux4g-p-m">
-                      <Link href="/" className="ux4g-btn-primary ux4g-btn-md ux4g-w-100">
-                        Start a request &rarr;
+          <div className="relative md:hidden">
+            <button
+              type="button"
+              aria-label="Open navigation menu"
+              aria-expanded={menuOpen}
+              onClick={() => setMenuOpen((v) => !v)}
+              className="flex h-9 w-9 items-center justify-center rounded-full border border-accent-600 text-accent-600"
+            >
+              <Icon name="menu" />
+            </button>
+            {menuOpen && (
+              <div
+                role="menu"
+                className="absolute right-0 top-11 w-56 rounded-2xl bg-white p-2 shadow-[0_4px_16px_rgb(0_0_0_/_0.12)]"
+              >
+                <ul>
+                  {LINKS.map((link) => (
+                    <li key={link.href} role="menuitem">
+                      <Link
+                        href={link.href}
+                        onClick={() => setMenuOpen(false)}
+                        className="block rounded-xl px-3 py-2 text-sm text-neutral-700 hover:bg-neutral-100"
+                      >
+                        {link.label}
                       </Link>
-                    </div>
-                  </div>
+                    </li>
+                  ))}
+                </ul>
+                <div className="p-1.5">
+                  <Button href="/" size="sm" className="w-full" onClick={() => setMenuOpen(false)}>
+                    Start a request &rarr;
+                  </Button>
                 </div>
               </div>
-            </div>
+            )}
           </div>
         </div>
       </nav>

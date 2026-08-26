@@ -5,11 +5,50 @@ import Link from "next/link";
 import { Nav } from "@/components/Nav";
 import { Footer } from "@/components/Footer";
 import { Reveal } from "@/components/Reveal";
-import { whatIsRti, whatYouCanGet, howItWorksSteps } from "@/lib/rti-content";
+import { Icon } from "@/components/ui/Icon";
+import { IconBadge } from "@/components/ui/IconBadge";
+import { Card } from "@/components/ui/Card";
+import { Tag } from "@/components/ui/Tag";
+import { Button } from "@/components/ui/Button";
+import { Input } from "@/components/ui/Input";
+import { Textarea } from "@/components/ui/Textarea";
+import { SearchComposer } from "@/components/ui/SearchComposer";
+import { ChatBubble } from "@/components/ui/ChatBubble";
+import { Alert } from "@/components/ui/Alert";
+import { Spinner } from "@/components/ui/Spinner";
+import { whatIsRti, howItWorksSteps } from "@/lib/rti-content";
 
-// UX4G Material Icons Outlined ligature names — see foundations/icons.css.
-const EXAMPLE_ICONS = ["schedule", "description", "chat", "payments"];
 const STEP_ICONS = ["chat", "account_balance", "payments", "task_alt"];
+
+// Same shape/JSX as the original whatYouCanGet import (title / example /
+// note), just swapped for the new brief's copy — kept to 4 items so the
+// existing 2x2 card grid doesn't have to change shape.
+const WHAT_YOU_CAN_GET = [
+  {
+    icon: "chat",
+    title: "Simple Request",
+    example: "Just tell us what you need.",
+    note: "Speak or type your question. Our AI assistant helps you turn it into a clear RTI request, find the right authority, and submit it within the guidelines.",
+  },
+  {
+    icon: "schedule",
+    title: "Easy Tracking",
+    example: "Know what’s happening.",
+    note: "No more wondering where your request went. See your application, timeline, current status and next steps — all in one place.",
+  },
+  {
+    icon: "shield",
+    title: "Secure Information",
+    example: "Your information, your control.",
+    note: "Receive and access your RTI documents securely, with DigiLocker integration designed to reduce unnecessary steps and keep your information in one place.",
+  },
+  {
+    icon: "eye",
+    title: "Transparent by Design",
+    example: "See exactly where things stand.",
+    note: "See the ₹10 fee, expected timeline, status, reasons for delays and what happens next.",
+  },
+];
 
 type ChatMessage = { role: "user" | "assistant"; content: string };
 type Authority = { code: string; name: string; ministry: string };
@@ -33,8 +72,8 @@ function ThreadTyping() {
     return () => clearInterval(id);
   }, []);
   return (
-    <div className="ux4g-d-flex ux4g-ai-center ux4g-gap-4xs ux4g-body-s-default ux4g-text-neutral-secondary">
-      <span className="ux4g-spinner-primary-full ux4g-spinner-sm" aria-hidden="true"></span>
+    <div className="flex items-center gap-2 text-sm text-neutral-500">
+      <Spinner />
       {LOADING_STAGES[stageIndex]}
     </div>
   );
@@ -52,6 +91,8 @@ export default function Home() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [email, setEmail] = useState("judge.demo@example.com");
+  const [name, setName] = useState("");
+  const [address, setAddress] = useState("");
   const [otpSent, setOtpSent] = useState(false);
   const [otpCode, setOtpCode] = useState("123456");
   const [caseId, setCaseId] = useState("");
@@ -76,9 +117,17 @@ export default function Home() {
       if (j.draft) setDraft(j.draft);
       if (j.applicant) {
         setApplicant(j.applicant);
-        // Carries the email the citizen already gave the assistant into
-        // step 2, so identity verification doesn't ask for it twice.
+        // Carries what the citizen already gave the assistant into step 2,
+        // so identity verification doesn't ask for any of it twice.
         setEmail(j.applicant.email);
+        setName(j.applicant.name);
+        setAddress(j.applicant.address);
+      } else if (!j.draft) {
+        // Assistant is still asking for something and doesn't have
+        // applicant details yet — same "ready to just click send" example
+        // reply as firstMessage above, but only appears once the assistant
+        // has actually asked for it, not the moment the chat step opens.
+        setComposerText("Priya Sharma, 12 MG Road, Bengaluru 560001, priya@example.com");
       }
       setSource(j.source);
     } catch (x) {
@@ -117,8 +166,8 @@ export default function Home() {
           subject: firstMessage || draft.slice(0, 80) || "RTI request",
           authority: authority ?? { code: "DOPT", name: "Department of Personnel & Training", ministry: "Ministry of Personnel, Public Grievances and Pensions" },
           applicantEmail: email,
-          applicantName: applicant?.name,
-          applicantAddress: applicant?.address,
+          applicantName: name,
+          applicantAddress: address,
           draftText: draft,
         }),
       });
@@ -130,118 +179,94 @@ export default function Home() {
   }
 
   return (
-    <main>
+    <main className="flex flex-1 flex-col">
       <Nav />
 
       {step === "home" && (
         <>
-          <section className="rti-hero ux4g-py-4xl">
-            <div className="ux4g-container ux4g-text-center">
-              <span className="rti-mono-label rti-badge-glass rti-hero-enter rti-hero-enter--1 ux4g-mb-m ux4g-d-inline-flex ux4g-ai-center ux4g-gap-2xs" style={{ padding: "0.375rem 0.875rem", borderRadius: "var(--ux4g-radius-full)", fontSize: "var(--ux4g-fs-12)" }}>
-                <i className="ux4g-icon-outlined ux4g-fs-16">auto_awesome</i>
-                AI-Assisted &middot; Right to Information, Made Clear
+          <section className="bg-gradient-to-br from-accent-600 via-accent-800 to-accent-900 py-24">
+            <div className="mx-auto w-full max-w-3xl px-4 text-center sm:px-6">
+              <span className="mb-6 inline-flex items-center gap-1.5 rounded-full border border-white/25 bg-white/15 px-3.5 py-1.5 text-xs font-medium uppercase tracking-wide text-white backdrop-blur-md">
+                <Icon name="auto_awesome" size={16} />
+                The Right to Information Act, 2005
               </span>
-              <h1 className="rti-display rti-hero-enter rti-hero-enter--2 ux4g-heading-xl-strong ux4g-text-neutral-inverse ux4g-my-m">
-                Just ask for what&rsquo;s yours.
+              <h1 className="font-[family-name:var(--font-display)] text-4xl font-bold text-white sm:text-5xl">
+                Bas bolo, aur ho jayega.
               </h1>
-              <p
-                className="rti-hero-enter rti-hero-enter--3 ux4g-body-m-default ux4g-text-neutral-inverse ux4g-opacity-80 ux4g-mb-l"
-                style={{ maxWidth: "36rem", marginInline: "auto" }}
-              >
-                Describe what you need in your own words. We&rsquo;ll turn it into a
-                clear request under the Right to Information Act, 2005.
+              <p className="mx-auto mt-4 max-w-xl text-base text-white/80">
+                Your right to information, without the jhanjhat.
               </p>
-              <form
-                className="ux4g-search ux4g-search-lg rti-composer rti-hero-enter rti-hero-enter--4 ux4g-text-neutral-primary"
-                onSubmit={startFromHome}
-              >
-                <span className="ux4g-icon-outlined ux4g-search-leading-icon">auto_awesome</span>
-                <input
-                  className="ux4g-search-input"
-                  aria-label="Describe your RTI request"
+              <div className="mt-8">
+                <SearchComposer
+                  size="lg"
+                  leadingIcon="auto_awesome"
+                  submitIcon="arrow_upward"
+                  submitLabel="Start with this"
                   value={firstMessage}
-                  onChange={(e) => setFirstMessage(e.target.value)}
+                  onChange={setFirstMessage}
+                  onSubmit={startFromHome}
                   placeholder="For example: why is my PF claim delayed?"
+                  inputProps={{ "aria-label": "Describe your RTI request" }}
+                  voice
+                  tone="dark"
                 />
-                <button type="submit" className="ux4g-search-btn" aria-label="Start with this">
-                  <span className="ux4g-icon-outlined">arrow_upward</span>
-                </button>
-              </form>
-              <small className="rti-mono rti-hero-enter rti-hero-enter--5 ux4g-body-xs-default ux4g-text-neutral-inverse ux4g-opacity-70 ux4g-mt-s ux4g-d-block">
-                Plain language in, a formatted RTI request out — powered by OpenAI.
-              </small>
+              </div>
+              <p className="mt-4 font-mono text-xs text-white/70">
+                Plain language in. A properly addressed RTI request out.
+              </p>
             </div>
           </section>
 
           <Reveal>
-            <section id="how-it-works" className="ux4g-container ux4g-py-2xl">
-              <span className="rti-mono-label ux4g-label-m-strong ux4g-text-primary">
-                <span className="rti-motif-dot" aria-hidden="true"></span>
+            <section id="how-it-works" className="mx-auto w-full max-w-5xl px-4 py-16 sm:px-6">
+              <span className="flex items-center gap-1.5 font-mono text-xs font-semibold uppercase tracking-wide text-accent-600">
+                <span className="h-1.5 w-1.5 rounded-full bg-accent-600" aria-hidden="true" />
                 {whatIsRti.eyebrow}
               </span>
-              <h2 className="rti-display ux4g-heading-l-strong ux4g-my-m">{whatIsRti.title}</h2>
-              <p className="ux4g-body-m-default ux4g-text-neutral-secondary ux4g-mb-m">
-                {whatIsRti.body}
-              </p>
-              <Link href="/how-it-works" className="ux4g-text-link-md">
+              <h2 className="mt-3 font-[family-name:var(--font-display)] text-2xl font-bold text-neutral-900">
+                {whatIsRti.title}
+              </h2>
+              <p className="mt-3 text-neutral-600">{whatIsRti.body}</p>
+              <Link href="/how-it-works" className="mt-3 inline-block text-sm font-medium text-accent-600">
                 Read the full walkthrough &rarr;
               </Link>
             </section>
           </Reveal>
 
           <Reveal>
-            <section className="ux4g-container ux4g-py-2xl">
-              <h2 className="rti-mono-label ux4g-label-m-strong ux4g-text-primary">
-                <span className="rti-motif-dot" aria-hidden="true"></span>
+            <section className="mx-auto w-full max-w-5xl px-4 py-16 sm:px-6">
+              <h2 className="flex items-center gap-1.5 font-mono text-xs font-semibold uppercase tracking-wide text-accent-600">
+                <span className="h-1.5 w-1.5 rounded-full bg-accent-600" aria-hidden="true" />
                 What You Can Actually Get
               </h2>
-              <div className="ux4g-grid ux4g-grid-auto-fit-300 ux4g-gap-m ux4g-my-m">
-                {whatYouCanGet.map((item, i) => {
-                  const iconName = EXAMPLE_ICONS[i % EXAMPLE_ICONS.length];
-                  return (
-                    <article
-                      key={item.title}
-                      className="ux4g-card ux4g-card-outline ux4g-card-vertical ux4g-shadow-l2 rti-card-lift"
-                    >
-                      <div className="ux4g-card-body">
-                        <div className="rti-icon-badge ux4g-mb-s">
-                          <i className="ux4g-icon-outlined ux4g-fs-20 ux4g-text-primary" aria-hidden="true">
-                            {iconName}
-                          </i>
-                        </div>
-                        <h3 className="ux4g-card-title">{item.title}</h3>
-                        <p className="ux4g-body-s-strong ux4g-mt-s">{item.example}</p>
-                        <p className="ux4g-body-s-default ux4g-text-neutral-secondary">{item.note}</p>
-                      </div>
-                    </article>
-                  );
-                })}
+              <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2">
+                {WHAT_YOU_CAN_GET.map((item) => (
+                  <Card key={item.title} lift>
+                    <IconBadge icon={item.icon} className="mb-3" />
+                    <h3 className="text-base font-semibold text-neutral-900">{item.title}</h3>
+                    <p className="mt-2 text-sm font-medium text-neutral-800">{item.example}</p>
+                    <p className="mt-1 text-sm text-neutral-500">{item.note}</p>
+                  </Card>
+                ))}
               </div>
             </section>
           </Reveal>
 
           <Reveal>
-            <section className="ux4g-container ux4g-py-2xl">
-              <h2 className="rti-mono-label ux4g-label-m-strong ux4g-text-primary">
-                <span className="rti-motif-dot" aria-hidden="true"></span>
+            <section className="mx-auto w-full max-w-5xl px-4 py-16 sm:px-6">
+              <h2 className="flex items-center gap-1.5 font-mono text-xs font-semibold uppercase tracking-wide text-accent-600">
+                <span className="h-1.5 w-1.5 rounded-full bg-accent-600" aria-hidden="true" />
                 How It Works
               </h2>
-              <ol className="ux4g-my-m" style={{ listStyle: "none", padding: 0 }}>
+              <ol className="mt-6 flex flex-col divide-y divide-neutral-200" style={{ listStyle: "none", padding: 0 }}>
                 {howItWorksSteps.map((s, i) => {
                   const iconName = STEP_ICONS[i % STEP_ICONS.length];
                   return (
-                    <li
-                      key={s.step}
-                      className="ux4g-d-flex ux4g-gap-6xs ux4g-py-m"
-                    >
-                      <span>
-                        <i className="ux4g-icon-outlined ux4g-fs-24 ux4g-text-primary" aria-hidden="true">
-                          {iconName}
-                        </i>
-                      </span>
+                    <li key={s.step} className="flex gap-4 py-4">
+                      <Icon name={iconName} size={24} className="mt-0.5 shrink-0 text-accent-600" />
                       <div>
-                        <h3 className="ux4g-title-s-strong">{s.title}</h3>
-                        <p className="ux4g-body-s-default ux4g-text-neutral-secondary">{s.body}</p>
+                        <h3 className="text-sm font-semibold text-neutral-900">{s.title}</h3>
+                        <p className="mt-1 text-sm text-neutral-500">{s.body}</p>
                       </div>
                     </li>
                   );
@@ -253,114 +278,86 @@ export default function Home() {
       )}
 
       {step === "chat" && (
-        <section className="ux4g-container ux4g-py-2xl">
-          <h1 className="rti-mono-label ux4g-label-m-strong ux4g-text-primary">Describe Your Question</h1>
+        <section className="mx-auto w-full max-w-3xl px-4 py-16 sm:px-6">
+          <h1 className="font-mono text-xs font-semibold uppercase tracking-wide text-accent-600">
+            Describe Your Question
+          </h1>
 
-          <div className="thread ux4g-my-m">
+          <div className="my-6 flex flex-col gap-4">
             {messages.map((m, i) => (
-              <div key={i} className={`thread__row thread__row--${m.role}`}>
-                <div>
-                  <div className={`thread__bubble thread__bubble--${m.role}`}>{m.content}</div>
-                  {m.role === "assistant" && i === messages.length - 1 && source && (
-                    <span
-                      className={
-                        source === "ai" ? "ux4g-tag-tonal-primary" : "ux4g-tag-tonal-neutral"
-                      }
-                    >
+              <div key={i} className="flex flex-col gap-1.5">
+                <ChatBubble role={m.role}>{m.content}</ChatBubble>
+                {m.role === "assistant" && i === messages.length - 1 && source && (
+                  <div className="pl-1">
+                    <Tag tonal={source === "ai" ? "primary" : "neutral"}>
                       {source === "ai" ? "Answered by OpenAI" : "Answered by local matcher"}
-                    </span>
-                  )}
-                </div>
+                    </Tag>
+                  </div>
+                )}
               </div>
             ))}
             {loading && <ThreadTyping />}
           </div>
 
           {authority && (
-            <div className="ux4g-card ux4g-card-outline ux4g-card-vertical ux4g-shadow-l2 ux4g-my-m">
-              <div className="ux4g-card-body">
-                <span className="rti-mono-label ux4g-label-s-strong ux4g-text-primary">
-                  Likely Public Authority
-                </span>
-                <h2 className="ux4g-card-title ux4g-mt-xs">{authority.name}</h2>
-                <p className="ux4g-body-s-default ux4g-text-neutral-secondary">
-                  {authority.ministry}
-                </p>
-              </div>
-            </div>
+            <Card className="my-6">
+              <span className="font-mono text-xs font-semibold uppercase tracking-wide text-accent-600">
+                Likely Public Authority
+              </span>
+              <h2 className="mt-1 text-base font-semibold text-neutral-900">{authority.name}</h2>
+              <p className="text-sm text-neutral-500">{authority.ministry}</p>
+            </Card>
           )}
 
           {draft && (
-            <div className="ux4g-textarea-container ux4g-textarea-lg ux4g-my-m">
-              <label className="rti-mono-label ux4g-label-m-default" htmlFor="rti-draft">
-                Your Editable Draft
-              </label>
-              <div className="ux4g-textarea">
-                <textarea
-                  id="rti-draft"
-                  className="ux4g-textarea-input"
-                  value={draft}
-                  onChange={(e) => setDraft(e.target.value)}
-                />
-                <div className="ux4g-textarea-counter">{draft.length} characters</div>
-              </div>
-              <div className="ux4g-textarea-helper">
-                <div className="ux4g-textarea-helper-left">
-                  <span className="ux4g-icon-outlined ux4g-textarea-helper-icon">info</span>
-                  <span className="ux4g-textarea-helper-text">No character whitelist</span>
-                </div>
-              </div>
-              <button
-                type="button"
-                className="ux4g-btn-primary ux4g-btn-md ux4g-mt-m"
-                onClick={() => setStep("verify")}
-              >
+            <div className="my-6 flex flex-col gap-3">
+              <Textarea label="Your Editable Draft" id="rti-draft" value={draft} onChange={setDraft} />
+              <Button onClick={() => setStep("verify")} className="self-start">
                 Review &amp; continue &rarr;
-              </button>
+              </Button>
             </div>
           )}
 
           {error && (
-            <div className="ux4g-context-alert ux4g-alert-error ux4g-my-m">
-              <i className="ux4g-icon ux4g-alert-icon">error</i>
-              <div className="ux4g-alert-message">{error}</div>
+            <div className="my-6">
+              <Alert variant="error">{error}</Alert>
             </div>
           )}
 
-          <form className="ux4g-search ux4g-mt-m" onSubmit={continueThread}>
-            <input
-              className="ux4g-search-input"
-              aria-label="Add more detail, or ask a follow-up"
-              value={composerText}
-              onChange={(e) => setComposerText(e.target.value)}
-              placeholder="Add more detail, or ask a follow-up&hellip;"
-              disabled={loading}
-            />
-            <button type="submit" className="ux4g-search-btn" disabled={loading} aria-label="Send">
-              <span className="ux4g-icon-outlined">send</span>
-            </button>
-          </form>
+          <SearchComposer
+            size="md"
+            leadingIcon="chat"
+            submitIcon="send"
+            submitLabel="Send"
+            value={composerText}
+            onChange={setComposerText}
+            onSubmit={continueThread}
+            placeholder="Add more detail, or ask a follow-up…"
+            disabled={loading}
+            className="mt-6"
+            inputProps={{ "aria-label": "Add more detail, or ask a follow-up" }}
+          />
         </section>
       )}
 
       {step === "verify" && (
-        <section className="ux4g-container ux4g-py-2xl">
-          <span className="rti-mono-label ux4g-label-m-strong ux4g-text-primary">Step 2 of 4</span>
-          <span className="ux4g-tag-tonal-warning ux4g-mt-xs ux4g-d-block" style={{ width: "fit-content" }}>
-            MOCK IDENTITY CHECK &mdash; no real OTP is sent
-          </span>
-          <h1 className="ux4g-heading-xl-strong ux4g-my-m">
+        <section className="mx-auto w-full max-w-2xl px-4 py-16 sm:px-6">
+          <span className="font-mono text-xs font-semibold uppercase tracking-wide text-accent-600">Step 2 of 4</span>
+          <div className="mt-2">
+            <Tag tonal="warning">MOCK IDENTITY CHECK &mdash; no real OTP is sent</Tag>
+          </div>
+          <h1 className="mt-4 text-3xl font-bold text-neutral-900">
             One check. <em>Then you&rsquo;re through.</em>
           </h1>
 
           {!otpSent ? (
             <>
-              <p className="ux4g-body-m-default ux4g-text-neutral-secondary ux4g-mb-m">
-                This is also the email your registration number and future
-                status updates will be tied to &mdash; including what you&rsquo;d
-                look up later in{" "}
-                <Link href="/view-history" className="ux4g-text-link-md">
-                  View History
+              <p className="mt-4 mb-6 text-neutral-600">
+                Pulled straight from what you told the assistant &mdash; check it over, fix anything that&rsquo;s off.
+                The email is also what your registration number and future status updates will be tied to,
+                including what you&rsquo;d look up later in{" "}
+                <Link href="/my-rti" className="font-medium text-accent-600">
+                  My RTI
                 </Link>
                 .
               </p>
@@ -370,56 +367,53 @@ export default function Home() {
                   if (!email.trim()) return;
                   setOtpSent(true);
                 }}
+                className="flex flex-col gap-4"
               >
-                <div className="ux4g-input-container ux4g-input-md">
-                  <label className="ux4g-label-m-default" htmlFor="rti-email">
-                    Email
-                  </label>
-                  <div className="ux4g-input">
-                    <input
-                      id="rti-email"
-                      className="ux4g-input-input"
-                      type="email"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      placeholder="you@example.com"
-                    />
-                  </div>
-                </div>
-                <button type="submit" className="ux4g-btn-primary ux4g-btn-md ux4g-mt-m">
-                  Send mock code &rarr;
-                </button>
+                <Input
+                  label="Full Name"
+                  id="rti-name"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  placeholder="Your full name"
+                />
+                <Input
+                  label="Postal Address"
+                  id="rti-address"
+                  value={address}
+                  onChange={(e) => setAddress(e.target.value)}
+                  placeholder="Your postal address"
+                />
+                <Input
+                  label="Email"
+                  id="rti-email"
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="you@example.com"
+                />
+                <Button className="self-start">Send mock code &rarr;</Button>
               </form>
             </>
           ) : (
             <>
-              <p className="ux4g-body-m-default ux4g-text-neutral-secondary ux4g-mb-m">
-                Mock code sent to <b>{email}</b>. Nothing was really sent
-                &mdash; use <b>123456</b>.
+              <p className="mt-4 mb-6 text-neutral-600">
+                Mock code sent to <b>{email}</b>. Nothing was really sent &mdash; use <b>123456</b>.
               </p>
               <form
                 onSubmit={(e) => {
                   e.preventDefault();
                   setStep("pay");
                 }}
+                className="flex flex-col gap-4"
               >
-                <div className="ux4g-input-container ux4g-input-md">
-                  <label className="ux4g-label-m-default" htmlFor="rti-otp">
-                    One-time code
-                  </label>
-                  <div className="ux4g-input">
-                    <input
-                      id="rti-otp"
-                      className="ux4g-input-input"
-                      value={otpCode}
-                      onChange={(e) => setOtpCode(e.target.value)}
-                      placeholder="123456"
-                    />
-                  </div>
-                </div>
-                <button type="submit" className="ux4g-btn-primary ux4g-btn-md ux4g-mt-m">
-                  Verify &rarr;
-                </button>
+                <Input
+                  label="One-time code"
+                  id="rti-otp"
+                  value={otpCode}
+                  onChange={(e) => setOtpCode(e.target.value)}
+                  placeholder="123456"
+                />
+                <Button className="self-start">Verify &rarr;</Button>
               </form>
             </>
           )}
@@ -427,62 +421,51 @@ export default function Home() {
       )}
 
       {step === "pay" && (
-        <section className="ux4g-container ux4g-py-2xl">
-          <span className="rti-mono-label ux4g-label-m-strong ux4g-text-primary">Step 3 of 4</span>
-          <span className="ux4g-tag-tonal-warning ux4g-mt-xs ux4g-d-block" style={{ width: "fit-content" }}>
-            MOCK PAYMENT &mdash; no real transaction
-          </span>
-          <h1 className="ux4g-heading-xl-strong ux4g-my-m">₹10 request fee</h1>
-          <p className="ux4g-body-m-default ux4g-text-neutral-secondary ux4g-mb-m">
-            Non-BPL applicants pay ₹10. BPL applicants attaching a valid
-            BPL certificate pay no fee.
+        <section className="mx-auto w-full max-w-2xl px-4 py-16 sm:px-6">
+          <span className="font-mono text-xs font-semibold uppercase tracking-wide text-accent-600">Step 3 of 4</span>
+          <div className="mt-2">
+            <Tag tonal="warning">MOCK PAYMENT &mdash; no real transaction</Tag>
+          </div>
+          <h1 className="mt-4 text-3xl font-bold text-neutral-900">₹10 request fee</h1>
+          <p className="mt-4 mb-6 text-neutral-600">
+            Non-BPL applicants pay ₹10. BPL applicants attaching a valid BPL certificate pay no fee.
           </p>
-          <div className="ux4g-d-flex ux4g-gap-4xs ux4g-flex-wrap">
-            <button
-              type="button"
-              className="ux4g-btn-primary ux4g-btn-md"
-              onClick={finalizeCase}
-              disabled={filing}
-            >
+          <div className="flex flex-wrap gap-3">
+            <Button onClick={finalizeCase} disabled={filing}>
               {filing ? "Filing…" : "Pay ₹10 (mock) →"}
-            </button>
-            <button
-              type="button"
-              className="ux4g-btn-outline-primary ux4g-btn-md"
-              onClick={finalizeCase}
-              disabled={filing}
-            >
+            </Button>
+            <Button variant="outline" onClick={finalizeCase} disabled={filing}>
               {filing ? "Filing…" : "Use BPL waiver →"}
-            </button>
+            </Button>
           </div>
         </section>
       )}
 
       {step === "done" && (
-        <section className="ux4g-container ux4g-py-2xl">
-          <span className="rti-mono-label ux4g-label-m-strong ux4g-text-primary">Step 4 of 4</span>
-          <span className="ux4g-tag-tonal-success ux4g-mt-xs ux4g-d-block" style={{ width: "fit-content" }}>
-            MOCK CONFIRMATION &mdash; no real government request was filed
-          </span>
-          <h1 className="ux4g-heading-xl-strong ux4g-my-m">
+        <section className="mx-auto w-full max-w-2xl px-4 py-16 sm:px-6">
+          <span className="font-mono text-xs font-semibold uppercase tracking-wide text-accent-600">Step 4 of 4</span>
+          <div className="mt-2">
+            <Tag tonal="success">MOCK CONFIRMATION &mdash; no real government request was filed</Tag>
+          </div>
+          <h1 className="mt-4 text-3xl font-bold text-neutral-900">
             Your request has a <em>home.</em>
           </h1>
-          <div className="ux4g-card ux4g-card-outline ux4g-card-vertical ux4g-shadow-l2">
-            <div className="ux4g-card-body">
-              <span className="rti-mono-label ux4g-label-s-strong ux4g-text-primary">Your RTI Case ID</span>
-              <h2 className="rti-mono ux4g-card-title ux4g-mt-xs">{caseId}</h2>
-              <p className="ux4g-body-s-default ux4g-text-neutral-secondary ux4g-mt-s">
-                One citizen-facing case, even if a Nodal Officer forwards parts
-                to other CPIOs. Status updates go to <b>{email}</b>.
-              </p>
-              <Link
-                href={`/view-history?email=${encodeURIComponent(email)}`}
-                className="ux4g-text-link-md ux4g-mt-s ux4g-d-block"
-              >
-                View in My RTI &rarr;
-              </Link>
-            </div>
-          </div>
+          <Card className="mt-6">
+            <span className="font-mono text-xs font-semibold uppercase tracking-wide text-accent-600">
+              Your RTI Case ID
+            </span>
+            <h2 className="mt-1 font-mono text-lg font-semibold text-neutral-900">{caseId}</h2>
+            <p className="mt-2 text-sm text-neutral-500">
+              One citizen-facing case, even if a Nodal Officer forwards parts to other CPIOs. Status updates go to{" "}
+              <b>{email}</b>.
+            </p>
+            <Link
+              href={`/my-rti?email=${encodeURIComponent(email)}`}
+              className="mt-3 inline-block text-sm font-medium text-accent-600"
+            >
+              View in My RTI &rarr;
+            </Link>
+          </Card>
         </section>
       )}
 
