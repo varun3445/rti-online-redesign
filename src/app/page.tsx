@@ -20,25 +20,23 @@ import { whatIsRti, howItWorksSteps } from "@/lib/rti-content";
 
 const STEP_ICONS = ["chat", "account_balance", "payments", "task_alt"];
 
-// English / Hindi / Tamil — the same line "jhanjhat" is borrowing from, in
-// each language rather than just the one word.
-const SUBHEAD_ROTATIONS = [
-  "Your right to information, without the jhanjhat.",
-  "सूचना का अधिकार, बिना झंझट के।",
-  "தகவல் அறியும் உரிமை, சிக்கல் இல்லாமல்.",
-];
+// "jhanjhat" (Hindi) rotating with its English and Tamil equivalents — same
+// sentence, just the one borrowed word swapping languages.
+const HASSLE_WORDS = ["झंझट", "hassle", "சிக்கல்"];
 
 function RotatingSubhead() {
   const [index, setIndex] = useState(0);
   useEffect(() => {
-    const id = setInterval(() => setIndex((i) => (i + 1) % SUBHEAD_ROTATIONS.length), 2800);
+    const id = setInterval(() => setIndex((i) => (i + 1) % HASSLE_WORDS.length), 2800);
     return () => clearInterval(id);
   }, []);
   return (
-    <p className="mx-auto mt-4 min-h-12 max-w-xl text-base text-white/80">
+    <p className="mx-auto mt-4 max-w-xl text-base text-white/80">
+      Your right to information, without the{" "}
       <span key={index} className="inline-block motion-safe:animate-[subhead-fade_0.5s_ease]">
-        {SUBHEAD_ROTATIONS[index]}
+        {HASSLE_WORDS[index]}
       </span>
+      .
     </p>
   );
 }
