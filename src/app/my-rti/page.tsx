@@ -76,6 +76,7 @@ export default function MyRtiPage() {
             onSubmit={onSubmit}
             placeholder="the email you filed with"
             disabled={loading}
+            loading={loading}
             inputProps={{ type: "email", "aria-label": "Email" }}
           />
         ) : (

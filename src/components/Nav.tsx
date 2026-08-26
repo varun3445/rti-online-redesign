@@ -56,7 +56,7 @@ export function Nav() {
             <img
               src="https://cdn.ux4g.gov.in/UX4G@3.0.18/assets/images/national_emblem.svg"
               alt="National Emblem"
-              className="h-8 w-8"
+              className="h-10 w-10"
             />
             <span className="h-6 w-px bg-neutral-300" aria-hidden="true" />
             <span className="font-medium text-neutral-900">RTI Online</span>

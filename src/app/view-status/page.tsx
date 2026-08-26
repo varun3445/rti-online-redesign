@@ -62,6 +62,7 @@ export default function ViewStatusPage() {
           onSubmit={onSubmit}
           placeholder="e.g. RTI-2026-0002"
           disabled={loading}
+          loading={loading}
           inputProps={{ "aria-label": "Registration number" }}
         />
 

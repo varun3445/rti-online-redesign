@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Icon } from "./Icon";
+import { Spinner } from "./Spinner";
 import { VoiceComposer } from "./VoiceComposer";
 import { cn } from "@/lib/cn";
 
@@ -35,6 +36,7 @@ export function SearchComposer({
   submitIcon = "arrow_forward",
   submitLabel = "Submit",
   disabled,
+  loading = false,
   className,
   inputProps,
   voice = false,
@@ -49,6 +51,10 @@ export function SearchComposer({
   submitIcon?: string;
   submitLabel?: string;
   disabled?: boolean;
+  /** Swaps the submit icon for a spinner and marks the form busy — for an
+   * in-flight search/lookup, distinct from `disabled` (which a caller may
+   * also set for other reasons). */
+  loading?: boolean;
   className?: string;
   inputProps?: React.InputHTMLAttributes<HTMLInputElement>;
   /** Adds a Text/Voice mode toggle. Voice mode is purely visual — an
@@ -71,6 +77,7 @@ export function SearchComposer({
       ) : (
         <form
           onSubmit={onSubmit}
+          aria-busy={loading}
           className={cn(
             "flex w-full items-center rounded-full",
             tone === "dark" ? "border border-white/25 bg-white/10" : "bg-white shadow-[0_8px_24px_rgb(0_0_0_/_0.12)]",
@@ -94,13 +101,13 @@ export function SearchComposer({
           <button
             type="submit"
             disabled={disabled}
-            aria-label={submitLabel}
+            aria-label={loading ? "Searching…" : submitLabel}
             className={cn(
               "flex shrink-0 items-center justify-center rounded-full bg-accent-600 text-white transition-colors hover:bg-accent-700 disabled:opacity-50",
               s.btn
             )}
           >
-            <Icon name={submitIcon} size={s.icon} className="text-white" />
+            {loading ? <Spinner size={s.icon - 2} tone="on-accent" /> : <Icon name={submitIcon} size={s.icon} className="text-white" />}
           </button>
         </form>
       )}
