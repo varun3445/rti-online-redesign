@@ -54,7 +54,8 @@ export default function PolicyPage() {
               <h3 className="text-base font-semibold text-neutral-900">Not affiliated with the Government of India</h3>
               <p className="mt-2 text-sm text-neutral-500">
                 This is an independent redesign concept, not an official product of DoPT, NIC, or any government
-                body.
+                body. Built and owned by Varun Srivathsan and Sriram Ganeshram, purely for Build What Moves India
+                2026.
               </p>
             </Card>
           </li>
