@@ -20,36 +20,28 @@ import { whatIsRti, howItWorksSteps } from "@/lib/rti-content";
 
 const STEP_ICONS = ["chat", "account_balance", "payments", "task_alt"];
 
-// Hindi / English / Tamil, index-paired — the headline's full translation
-// alongside the one borrowed word ("jhanjhat") the subhead rotates. Same
-// index drives both, so they change together, not independently.
-const HERO_ROTATIONS = [
-  { headline: "बस बोलो, और हो जाएगा।", tail: "झंझट" },
-  { headline: "Just say it, and it's done.", tail: "hassle" },
-  { headline: "சொன்னால் போதும், நடந்துவிடும்.", tail: "சிக்கல்" },
+// Hindi/English/Tamil for the rotating headline — the subhead below
+// stays static English per the latest request.
+const HEADLINES = [
+  "Just say it, and it’s done.",
+  "बस बोलो, और हो जाएगा।",
+  "சொன்னால் போதும், நடந்துவிடும்.",
 ];
 
 function RotatingHero() {
   const [index, setIndex] = useState(0);
   useEffect(() => {
-    const id = setInterval(() => setIndex((i) => (i + 1) % HERO_ROTATIONS.length), 2800);
+    const id = setInterval(() => setIndex((i) => (i + 1) % HEADLINES.length), 2800);
     return () => clearInterval(id);
   }, []);
-  const current = HERO_ROTATIONS[index];
   return (
     <>
       <h1 className="min-h-[3.5rem] font-[family-name:var(--font-display)] text-4xl font-bold text-white sm:min-h-[3.75rem] sm:text-5xl">
         <span key={index} className="inline-block motion-safe:animate-[subhead-fade_0.5s_ease]">
-          {current.headline}
+          {HEADLINES[index]}
         </span>
       </h1>
-      <p className="mx-auto mt-4 max-w-xl text-base text-white/80">
-        Your right to information, without the{" "}
-        <span key={index} className="inline-block motion-safe:animate-[subhead-fade_0.5s_ease]">
-          {current.tail}
-        </span>
-        .
-      </p>
+      <p className="mx-auto mt-4 max-w-xl text-base text-white/80">Your right to information, without the hassle.</p>
     </>
   );
 }
