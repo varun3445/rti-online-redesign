@@ -41,10 +41,12 @@ const monoFont = JetBrains_Mono({
 export const metadata: Metadata = {
   title: "RTI Online BWMI 26",
   description: "RTI Online portal for Build What Moves India 2026 by Varun Srivathsan.",
-  icons: {
-    icon: [{ url: "https://cdn.ux4g.gov.in/UX4G@3.0.18/assets/images/national_emblem.svg", type: "image/svg+xml" }],
-    shortcut: "https://cdn.ux4g.gov.in/UX4G@3.0.18/assets/images/national_emblem.svg",
-  },
+  // Favicon comes from src/app/icon.png (Next.js file convention) — a
+  // small square PNG rendered from the emblem, not the metadata.icons
+  // field below. The emblem's original SVG (used as the nav logo) is
+  // 200KB, non-square, and hundreds of paths deep; browsers render that
+  // fine inline but several silently fail to use it as an actual favicon,
+  // which is why the tab icon wasn't showing up.
 };
 
 export default function RootLayout({
