@@ -39,8 +39,8 @@ const monoFont = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "RTI Online BWMI 26",
-  description: "RTI Online portal for Build What Moves India 2026 by Varun Srivathsan.",
+  title: "Adhikarana — BWMI 26",
+  description: "Adhikarana — an RTI filing portal for Build What Moves India 2026 by Varun Srivathsan.",
   // Favicon comes from src/app/icon.png (Next.js file convention) — a
   // small square PNG rendered from the emblem, not the metadata.icons
   // field below. The emblem's original SVG (used as the nav logo) is

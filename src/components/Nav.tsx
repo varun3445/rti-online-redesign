@@ -60,7 +60,7 @@ export function Nav() {
               className="h-10 w-10"
             />
             <span className="h-6 w-px bg-neutral-300" aria-hidden="true" />
-            <span className="font-medium text-neutral-900">RTI Online</span>
+            <span className="font-medium text-neutral-900">Adhikarana</span>
           </Link>
 
           <div className="hidden items-center gap-6 md:flex">
