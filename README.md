@@ -31,15 +31,6 @@ Home (multi step: home, chat, verify, pay, done), How it works, Your rights, FAQ
 
 Next.js 16 (App Router), React 19, TypeScript, Tailwind CSS 4, Supabase, Zod for validation, Lucide icons.
 
-## Run it locally
-
-```bash
-cp .env.local.example .env.local   # add your Supabase values
-npm install
-npm run dev
-npm run verify:cases               # sanity check on the case data
-```
-
 ## Author
 
 [Varun Srivathsan](https://varunsrivathsan.com).
